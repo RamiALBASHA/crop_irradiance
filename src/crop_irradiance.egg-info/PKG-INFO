@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: crop-irradiance
+Version: 0.0.1
+Summary: a library for simulating irradiance absorption by crops canopies
+Home-page: https://github.com/RamiALBASHA/crop_irradiance
+Author: Rami ALBASHA
+Author-email: rami albacha at yahoo dot com
+License: UNKNOWN
+Description: # irradiance
+        a library for simulating irradiance absorption by crops canopies
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: CeCILL-C Free Software License Agreement (CECILL-C)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
