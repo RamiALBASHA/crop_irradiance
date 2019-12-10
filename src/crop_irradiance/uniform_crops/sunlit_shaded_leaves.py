@@ -35,7 +35,7 @@ def calc_direct_black_extinction_coefficient(solar_inclination: float,
             Crop Micrometeorology: A Simulation Study.
             Simulation monographs, Pudoc, Wageningen, 257 pp.
     """
-    return leaves_to_sun_average_projection / sin(solar_inclination)
+    return leaves_to_sun_average_projection / sin(max(1.e-6, solar_inclination))
 
 
 def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering_coefficient: float,
