@@ -62,15 +62,46 @@ def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering
     return direct_black_extinction_coefficient * sqrt(1 - leaf_scattering_coefficient)
 
 
+def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> [tuple]:
+    """Calculates the contributions from sky sectors (rings) to diffuse irradiance.
+
+    Args:
+        sky_sectors_number: [-] number of sky sectors to be used
+        sky_type: one of 'soc' or 'uoc' (Sky OverCast and Uniform OverCast, respectively)
+
+    Returns:
+        [-] the contributions from sky sectors (rings) to diffuse irradiance
+    """
+    sky_weights = []
+    if sky_type == 'uoc':
+        assert sky_sectors_number == 3, ''
+        sky_weights = [0.25, 0.5, 0.25]
+    elif sky_type == 'soc':
+        sky_weights = []
+        angle_increment = (pi / 2.0) / sky_sectors_number / 2.0  # half increment in sky ring declination angle
+        for i in range(sky_sectors_number):
+            lower_angle = i * 2.0 * angle_increment
+            upper_angle = (i + 1) * 2.0 * angle_increment
+            # Weight factor for each sky ring, the value 7.0/6.0 results from integrating
+            # weights over the sky hemisphere, thus used for normalization.
+            weight = (sin(upper_angle) ** 2 * (0.5 + 2.0 / 3.0 * sin(upper_angle)) - sin(lower_angle) ** 2 * (
+                    0.5 + 2.0 / 3.0 * (sin(lower_angle)))) / (7.0 / 6.0)
+            sky_weights.append(weight)
+
+    return sky_weights
+
+
 def calc_diffuse_extinction_coefficient(leaf_area_index: float,
                                         leaf_scattering_coefficient: float,
-                                        sky_sectors_number: int = 3) -> (float, float):
+                                        sky_sectors_number: int = 3,
+                                        sky_type: str = 'soc') -> (float, float):
     """Calculates the diffuse extinction coefficients for canopies with non-black and black leaves.
 
     Args:
         leaf_area_index: [m2leaf m-2ground] leaf area index of the whole canopy
         leaf_scattering_coefficient: [-] leaf scattering coefficient
         sky_sectors_number: [-] number of sky sectors to be used
+        sky_type: one of 'soc' or 'uoc' (Sky OverCast and Uniform OverCast, respectively)
 
     Returns:
         [m2ground m-2leaf] the extinction coefficient of diffuse irradiance through a canopy of non-black leaves
@@ -78,32 +109,27 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
 
     References:
         Goudriaan J. (1988)
-        The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
-        Agricultural and Forest Meteorology 43, 155 - 169.
+            The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
+            Agricultural and Forest Meteorology 43, 155 - 169.
     """
+    sky_weights = calc_sky_sectors_weight(sky_sectors_number, sky_type)
+
     angle_increment = (pi / 2.0) / sky_sectors_number / 2.0  # half increment in sky ring declination angle
 
-    k_dif = 0.0
-    k_dif_black = 0.0
+    diffuse_extinction_coefficient = 0.0
+    diffuse_black_extinction_coefficient = 0.0
 
     for i in range(sky_sectors_number):
-        beta_sky_i = angle_increment * (1.0 + 2.0 * i)
-        beta_sky_l = i * 2.0 * angle_increment
-        beta_sky_u = (i + 1) * 2.0 * angle_increment
-        # Weight factor for each sky ring, the value 7.0/6.0 results from integrating
-        # c_sky_i over the sky hemisphere, thus used for normalization.
-        c_sky_i = (sin(beta_sky_u) ** 2 * (0.5 + 2.0 / 3.0 * sin(beta_sky_u)) - sin(beta_sky_l) ** 2 * (
-                    0.5 + 2.0 / 3.0 * (sin(beta_sky_l)))) / (7.0 / 6.0)
-        k_dif_i = c_sky_i * exp(-(0.5 / sin(beta_sky_i)) * sqrt(1.0 - leaf_scattering_coefficient) * leaf_area_index)
-        k_dif += k_dif_i
+        sector_angle = angle_increment * (1.0 + 2.0 * i)
+        diffuse_extinction_coefficient += sky_weights[i] * exp(
+            -(0.5 / sin(sector_angle)) * sqrt(1.0 - leaf_scattering_coefficient) * leaf_area_index)
 
-        k_dif_i_black = c_sky_i * exp(-(0.5 / sin(beta_sky_i)) * leaf_area_index)
-        k_dif_black += k_dif_i_black
+        diffuse_black_extinction_coefficient += sky_weights[i] * exp(-(0.5 / sin(sector_angle)) * leaf_area_index)
 
-    k_dif = -1.0 / leaf_area_index * log(k_dif)
-    k_dif_black = -1.0 / leaf_area_index * log(k_dif_black)
+    diffuse_extinction_coefficient = -1.0 / leaf_area_index * log(diffuse_extinction_coefficient)
+    diffuse_black_extinction_coefficient = -1.0 / leaf_area_index * log(diffuse_black_extinction_coefficient)
 
-    return k_dif, k_dif_black
+    return diffuse_extinction_coefficient, diffuse_black_extinction_coefficient
 
 
 def calc_canopy_reflectance_to_direct_irradiance(direct_black_extinction_coefficient: float,
