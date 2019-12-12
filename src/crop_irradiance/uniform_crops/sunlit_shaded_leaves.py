@@ -92,8 +92,8 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
         beta_sky_u = (i + 1) * 2.0 * angle_increment
         # Weight factor for each sky ring, the value 7.0/6.0 results from integrating
         # c_sky_i over the sky hemisphere, thus used for normalization.
-        c_sky_i = (sin(beta_sky_u) ** 2) * (0.5 + 2.0 / 3.0 * sin(beta_sky_u)) - (sin(beta_sky_l) ** 2) * (
-                0.5 + 2.0 / 3.0 * (sin(beta_sky_l))) / (7.0 / 6.0)
+        c_sky_i = (sin(beta_sky_u) ** 2 * (0.5 + 2.0 / 3.0 * sin(beta_sky_u)) - sin(beta_sky_l) ** 2 * (
+                    0.5 + 2.0 / 3.0 * (sin(beta_sky_l)))) / (7.0 / 6.0)
         k_dif_i = c_sky_i * exp(-(0.5 / sin(beta_sky_i)) * sqrt(1.0 - leaf_scattering_coefficient) * leaf_area_index)
         k_dif += k_dif_i
 
