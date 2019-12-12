@@ -112,6 +112,7 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
             The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
             Agricultural and Forest Meteorology 43, 155 - 169.
     """
+    leaf_area_index = max(1.e-6, leaf_area_index)
     sky_weights = calc_sky_sectors_weight(sky_sectors_number, sky_type)
 
     angle_increment = (pi / 2.0) / sky_sectors_number / 2.0  # half increment in sky ring declination angle
