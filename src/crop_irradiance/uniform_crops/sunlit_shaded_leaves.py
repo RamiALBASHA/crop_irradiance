@@ -193,7 +193,7 @@ def calc_shaded_fraction(cumulative_leaf_area_index: float, direct_black_extinct
     Returns:
         [-] fraction of shaded leaves at a given depth inside the canopy
     """
-    return 1 - calc_shaded_fraction(cumulative_leaf_area_index, direct_black_extinction_coefficient)
+    return 1 - calc_sunlit_fraction(cumulative_leaf_area_index, direct_black_extinction_coefficient)
 
 
 def calc_absorbed_direct_irradiance(incident_direct_irradiance: float,
