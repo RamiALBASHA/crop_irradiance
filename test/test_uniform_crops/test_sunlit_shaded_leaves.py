@@ -176,7 +176,7 @@ def test_calc_absorbed_diffuse_irradiance_at_given_depth_decreases_as_canopy_ref
     assert all([x > y for x, y in zip(absorbed_irradiance, absorbed_irradiance[1:])])
 
 
-def test_calc_absorbed_diffuse_irradiance_at_given_depth_doesnot_have_monotonic_behavior_with_diffuse_extinction_coef():
+def test_calc_absorbed_diffuse_irradiance_at_given_depth_does_not_have_monotonic_trend_with_diffuse_extinction_coef():
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(
         10., 3.0, 0.4, diffuse_extinction_coefficient) for diffuse_extinction_coefficient in arange(0, 1.1, 0.1)]
     assert not all([x < y for x, y in zip(absorbed_irradiance, absorbed_irradiance[1:])])
