@@ -126,15 +126,15 @@ def test_calc_sunlit_fraction_decreases_as_extinction_coefficient_increases():
 
 
 def test_calc_shaded_fraction_increases_as_cumulative_leaf_area_index_increases():
-    sunlit_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(cumulative_leaf_area_index, 0.5) for
+    shaded_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(cumulative_leaf_area_index, 0.5) for
                        cumulative_leaf_area_index in arange(0, 5, 0.1)]
-    assert all([x < y for x, y in zip(sunlit_fraction, sunlit_fraction[1:])])
+    assert all([x < y for x, y in zip(shaded_fraction, shaded_fraction[1:])])
 
 
 def test_calc_shaded_fraction_increases_as_direct_black_extinction_coefficient_increases():
-    sunlit_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(3., extinction_coef) for
+    shaded_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(3., extinction_coef) for
                        extinction_coef in arange(0.5, 10.5, 0.5)]
-    assert all([x < y for x, y in zip(sunlit_fraction, sunlit_fraction[1:])])
+    assert all([x < y for x, y in zip(shaded_fraction, shaded_fraction[1:])])
 
 
 def test_calc_absorbed_direct_irradiance_increases_as_incident_direct_irradiance_increases():
