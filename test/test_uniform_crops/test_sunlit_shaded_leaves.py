@@ -34,6 +34,7 @@ def test_calc_direct_black_extinction_coefficient_is_maximum_at_sunrise_and_suns
 def test_calc_direct_extinction_coefficient_is_zero_when_leaf_scattering_is_unity():
     leaf_scattering_coefficient = 1.
     solar_inclination = pi / 3.
+
     assert sunlit_shaded_leaves.calc_direct_extinction_coefficient(solar_inclination, leaf_scattering_coefficient) == 0.
 
 
@@ -43,6 +44,7 @@ def test_calc_direct_extinction_coefficient_returns_expected_value():
     expected_value = 0.4609772228646444
     actual_value = sunlit_shaded_leaves.calc_direct_extinction_coefficient(solar_inclination,
                                                                            leaf_scattering_coefficient)
+
     testing.assert_almost_equal(actual_value, expected_value, decimal=6)
 
 
@@ -53,6 +55,7 @@ def test_calc_sky_sectors_weight_returns_expected_uoc_values():
 def test_calc_sky_sectors_weight_returns_expected_soc_values():
     actual_values = sunlit_shaded_leaves.calc_sky_sectors_weight(3, 'soc')
     expected_values = [0.1785714285714285, 0.5140108873361879, 0.3074176840923834]
+
     testing.assert_almost_equal(actual_values, expected_values, decimal=6)
 
 
@@ -64,6 +67,7 @@ def test_calc_sky_sectors_weight_returns_weights_which_sums_up_to_1():
     for sky_type in ('soc', 'uoc'):
         actual_value = sum(sunlit_shaded_leaves.calc_sky_sectors_weight(3, sky_type))
         expected_value = 1.0
+
         testing.assert_almost_equal(actual_value, expected_value, decimal=6)
 
 
@@ -72,6 +76,7 @@ def test_calc_diffuse_extinction_coefficient_reduces_as_leaf_area_index_increase
     diffuse_coeffcients = [
         sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(leaf_area_index, leaf_scattering_coefficient) for
         leaf_area_index in arange(0, 5.1, 0.1)]
+
     assert_values_trend(values=diffuse_coeffcients, trend='decreasing')
 
 
@@ -82,6 +87,7 @@ def test_calc_diffuse_extinction_coefficient_returns_greater_extinction_coeffici
     for sky_type in ('soc', 'uoc'):
         extinction_coef, black_extinction_coef = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
             leaf_area_index, leaf_scattering_coefficient, sky_sectors_number, sky_type)
+
     assert extinction_coef < black_extinction_coef
 
 
@@ -95,6 +101,7 @@ def test_calc_diffuse_extinction_coefficient_returns_expected_values():
     for sky_type in ('soc', 'uoc'):
         actual_values = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
             leaf_area_index, leaf_scattering_coefficient, sky_sectors_number, sky_type)
+
     testing.assert_almost_equal(actual_values, expected_values[sky_type], decimal=6)
 
 
@@ -105,12 +112,14 @@ def test_calc_canopy_reflectance_to_direct_irradiance_is_zero_when_leaf_scatteri
 def test_calc_canopy_reflectance_to_direct_irradiance_increases_as_leaf_scattering_increases():
     canopy_reflectance = [sunlit_shaded_leaves.calc_canopy_reflectance_to_direct_irradiance(0.5, scattering_coef) for
                           scattering_coef in arange(0, 1.1, 0.1)]
+
     assert_values_trend(values=canopy_reflectance, trend='increasing')
 
 
 def test_calc_canopy_reflectance_to_direct_irradiance_increases_as_direct_black_extinction_coefficient_increases():
     canopy_reflectance = [sunlit_shaded_leaves.calc_canopy_reflectance_to_direct_irradiance(extinction_coef, 0.15) for
                           extinction_coef in arange(0, 1.1, 0.1)]
+
     assert_values_trend(values=canopy_reflectance, trend='increasing')
 
 
@@ -132,42 +141,49 @@ def test_calc_canopy_reflectance_to_diffuse_irradiance_raises_error_for_unexpect
 def test_calc_sunlit_fraction_decreases_as_cumulative_leaf_area_index_increases():
     sunlit_fraction = [sunlit_shaded_leaves.calc_sunlit_fraction(cumulative_leaf_area_index, 0.5) for
                        cumulative_leaf_area_index in arange(0, 5, 0.1)]
+
     assert_values_trend(values=sunlit_fraction, trend='decreasing')
 
 
 def test_calc_sunlit_fraction_decreases_as_extinction_coefficient_increases():
     sunlit_fraction = [sunlit_shaded_leaves.calc_sunlit_fraction(3., extinction_coef) for
                        extinction_coef in arange(0.5, 10.5, 0.5)]
+
     assert_values_trend(values=sunlit_fraction, trend='decreasing')
 
 
 def test_calc_shaded_fraction_increases_as_cumulative_leaf_area_index_increases():
     shaded_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(cumulative_leaf_area_index, 0.5) for
                        cumulative_leaf_area_index in arange(0, 5, 0.1)]
+
     assert_values_trend(values=shaded_fraction, trend='increasing')
 
 
 def test_calc_shaded_fraction_increases_as_direct_black_extinction_coefficient_increases():
     shaded_fraction = [sunlit_shaded_leaves.calc_shaded_fraction(3., extinction_coef) for
                        extinction_coef in arange(0.5, 10.5, 0.5)]
+
     assert_values_trend(values=shaded_fraction, trend='increasing')
 
 
 def test_calc_absorbed_direct_irradiance_increases_as_incident_direct_irradiance_increases():
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_direct_irradiance(incident_direct_irradiance, 0.15, 0.5)
                            for incident_direct_irradiance in range(0, 800, 100)]
+
     assert_values_trend(values=absorbed_irradiance, trend='increasing')
 
 
 def test_calc_absorbed_direct_irradiance_decreases_as_leaf_scattering_coefficient_decreases():
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_direct_irradiance(800., leaf_scattering, 0.5)
                            for leaf_scattering in arange(0, 1.1, 0.1)]
+
     assert_values_trend(values=absorbed_irradiance, trend='decreasing')
 
 
 def test_calc_absorbed_direct_irradiance_increases_as_direct_black_extinction_coefficient_increases():
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_direct_irradiance(800., 0.15, extinction_coef) for
                            extinction_coef in arange(0.5, 10.5, 0.5)]
+
     assert_values_trend(values=absorbed_irradiance, trend='increasing')
 
 
@@ -175,6 +191,7 @@ def test_calc_absorbed_diffuse_irradiance_at_given_depth_increases_as_incident_d
     absorbed_irradiance = [
         sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(
             incident_diffuse_irradiance, 3.0, 0.4, 0.64) for incident_diffuse_irradiance in range(0, 80, 10)]
+
     assert_values_trend(values=absorbed_irradiance, trend='increasing')
 
 
@@ -182,6 +199,7 @@ def test_calc_absorbed_diffuse_irradiance_at_given_depth_decreases_as_cumulative
     absorbed_irradiance = [
         sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(10., cumulative_leaf_area_index, 0.4, 0.64)
         for cumulative_leaf_area_index in arange(0, 5, 0.1)]
+
     assert_values_trend(values=absorbed_irradiance, trend='decreasing')
 
 
@@ -189,12 +207,14 @@ def test_calc_absorbed_diffuse_irradiance_at_given_depth_decreases_as_canopy_ref
     absorbed_irradiance = [
         sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(10., 3.0, canopy_reflectance, 0.64)
         for canopy_reflectance in arange(0, 1.1, 0.1)]
+
     assert_values_trend(values=absorbed_irradiance, trend='decreasing')
 
 
 def test_calc_absorbed_diffuse_irradiance_at_given_depth_does_not_have_monotonic_trend_with_diffuse_extinction_coef():
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(
         10., 3.0, 0.4, diffuse_extinction_coefficient) for diffuse_extinction_coefficient in arange(0, 1.1, 0.1)]
+
     assert_values_trend(values=absorbed_irradiance, trend='non-monotonic')
 
 
@@ -202,4 +222,5 @@ def test_calc_absorbed_diffuse_irradiance_at_given_depth_peaks_at_predefined_val
     absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_at_given_depth(
         10., 3.0, 0.4, diffuse_extinction_coefficient) for diffuse_extinction_coefficient in arange(0, 1.1, 0.1)]
     absorbed_irradiance_max = absorbed_irradiance[3]
+
     assert all([abs_irradiance <= absorbed_irradiance_max for abs_irradiance in absorbed_irradiance])
