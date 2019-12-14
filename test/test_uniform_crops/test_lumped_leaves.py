@@ -1,5 +1,5 @@
 from numpy import arange, testing
-from crop_irradiance.uniform_crops import lumped_leaves
+from crop_irradiance.uniform_crops.formalisms import lumped_leaves
 
 
 def test_calc_beer_absorption_is_greater_to_zero_for_none_zero_incident_irradiance():

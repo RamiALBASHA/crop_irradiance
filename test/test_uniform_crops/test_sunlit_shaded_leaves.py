@@ -1,4 +1,4 @@
-from crop_irradiance.uniform_crops import sunlit_shaded_leaves
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
 from numpy import testing, pi, arange, random
 
 
