@@ -460,6 +460,11 @@ def absorbed_irradiance_by_sunlit_and_shaded_leaves_per_leaf_layer(incident_dire
     Returns:
         [W m-2ground] the absorbed irradiance by sunlit and shaded leaves of a leaf layer per unit ground area, where
             leaves categories ('sunlit', 'shaded') are returned as dictionary keys
+
+    References:
+        Goudriaan J. (1988)
+            The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
+            Agricultural and Forest Meteorology 43, 155 - 169.
     """
     return {
         'sunlit': absorbed_irradiance_by_sunlit_leaves_per_leaf_layer(
