@@ -1,4 +1,4 @@
-from crop_irradiance.uniform_crops import sunlit_shaded_leaves
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
 from numpy import testing, pi, arange, random
 
 
@@ -121,21 +121,6 @@ def test_calc_canopy_reflectance_to_direct_irradiance_increases_as_direct_black_
                           extinction_coef in arange(0, 1.1, 0.1)]
 
     assert_values_trend(values=canopy_reflectance, trend='increasing')
-
-
-def test_calc_canopy_reflectance_to_diffuse_irradiance_returns_expected_values_for_par_band():
-    assert sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('par') == 0.057
-
-
-def test_calc_canopy_reflectance_to_diffuse_irradiance_returns_expected_values_for_nir_band():
-    assert sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('nir') == 0.389
-
-
-def test_calc_canopy_reflectance_to_diffuse_irradiance_raises_error_for_unexpected_irradiance_bands():
-    try:
-        sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('some unexpected band')
-    except ValueError as e:
-        assert e.args[0] == '"irradiance_band" must be one of ("par", "nir")'
 
 
 def test_calc_sunlit_fraction_is_bounded_by_zero_and_unity():

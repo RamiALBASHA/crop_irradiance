@@ -62,7 +62,7 @@ def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering
     return direct_black_extinction_coefficient * sqrt(1 - leaf_scattering_coefficient)
 
 
-def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> [tuple]:
+def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> list:
     """Calculates the contributions from sky sectors (rings) to diffuse irradiance.
 
     Args:
@@ -149,23 +149,6 @@ def calc_canopy_reflectance_to_direct_irradiance(direct_black_extinction_coeffic
             1.0 + sqrt(1 - leaf_scattering_coefficient))
     return 1.0 - exp(-(2.0 * reflectance_of_horizontal_leaves * direct_black_extinction_coefficient) / (
             1.0 + direct_black_extinction_coefficient))
-
-
-def get_canopy_reflectance_to_diffuse_irradiance(irradiance_band: str) -> float:
-    """Returns default canopy reflectance to diffuse irradiance for a given irradiance band.
-
-    Args:
-        irradiance_band: irradiance band, one of ("par", "nir")
-
-    Returns:
-        [-] default canopy reflectance to diffuse irradiance for a given irradiance band
-    """
-    if irradiance_band == 'par':
-        return 0.057
-    elif irradiance_band == 'nir':
-        return 0.389
-    else:
-        raise ValueError('"irradiance_band" must be one of ("par", "nir")')
 
 
 def calc_sunlit_fraction(cumulative_leaf_area_index: float, direct_black_extinction_coefficient: float) -> float:
@@ -429,3 +412,65 @@ def absorbed_irradiance_by_shaded_leaves_per_leaf_layer(incident_direct_irradian
         upper_cumulative_leaf_area_index, leaf_layer_thickness, direct_black_extinction_coefficient))
 
     return (absorbed_diffuse_irradiance + absorbed_scattered_irradiance) * shaded_area
+
+
+def absorbed_irradiance_by_sunlit_and_shaded_leaves_per_leaf_layer(incident_direct_irradiance: float,
+                                                                   incident_diffuse_irradiance: float,
+                                                                   upper_cumulative_leaf_area_index: float,
+                                                                   leaf_layer_thickness: float,
+                                                                   leaf_scattering_coefficient: float,
+                                                                   canopy_reflectance_to_direct_irradiance: float,
+                                                                   canopy_reflectance_to_diffuse_irradiance: float,
+                                                                   direct_extinction_coefficient: float,
+                                                                   direct_black_extinction_coefficient: float,
+                                                                   diffuse_extinction_coefficient: float) -> dict:
+    """Calculates the absorbed irradiance by sunlit and shaded leaves of a leaf layer per unit ground area.
+
+    Args:
+        incident_direct_irradiance: [W m-2ground] incident direct (beam) irradiance at the top of the canopy
+        incident_diffuse_irradiance: [W m-2ground] incident diffuse irradiance at the top of the canopy
+        upper_cumulative_leaf_area_index: [m2leaf m-2ground] cumulative downwards leaf area index at the top of the
+            considered layer
+        leaf_layer_thickness: [m2leaf m-2ground] leaf area index of the considered layer
+        leaf_scattering_coefficient: [-] leaf scattering coefficient
+        canopy_reflectance_to_direct_irradiance: [-] canopy reflectance to direct (beam) irradiance
+        canopy_reflectance_to_diffuse_irradiance: [-] canopy reflectance to diffuse irradiance
+        direct_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of direct (beam) irradiance
+        direct_black_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of direct (beam)
+            irradiance for black leaves
+        diffuse_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of diffuse irradiance
+
+    Returns:
+        [W m-2ground] the absorbed irradiance by sunlit and shaded leaves of a leaf layer per unit ground area, where
+            leaves categories ('sunlit', 'shaded') are returned as dictionary keys
+
+    References:
+        Goudriaan J. (1988)
+            The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
+            Agricultural and Forest Meteorology 43, 155 - 169.
+    """
+    return {
+        'sunlit': absorbed_irradiance_by_sunlit_leaves_per_leaf_layer(
+            incident_direct_irradiance,
+            incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index,
+            leaf_layer_thickness,
+            leaf_scattering_coefficient,
+            canopy_reflectance_to_direct_irradiance,
+            canopy_reflectance_to_diffuse_irradiance,
+            direct_extinction_coefficient,
+            direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient),
+
+        'shaded': absorbed_irradiance_by_shaded_leaves_per_leaf_layer(
+            incident_direct_irradiance,
+            incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index,
+            leaf_layer_thickness,
+            leaf_scattering_coefficient,
+            canopy_reflectance_to_direct_irradiance,
+            canopy_reflectance_to_diffuse_irradiance,
+            direct_extinction_coefficient,
+            direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient)
+    }
