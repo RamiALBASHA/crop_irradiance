@@ -151,23 +151,6 @@ def calc_canopy_reflectance_to_direct_irradiance(direct_black_extinction_coeffic
             1.0 + direct_black_extinction_coefficient))
 
 
-def get_canopy_reflectance_to_diffuse_irradiance(irradiance_band: str) -> float:
-    """Returns default canopy reflectance to diffuse irradiance for a given irradiance band.
-
-    Args:
-        irradiance_band: irradiance band, one of ("par", "nir")
-
-    Returns:
-        [-] default canopy reflectance to diffuse irradiance for a given irradiance band
-    """
-    if irradiance_band == 'par':
-        return 0.057
-    elif irradiance_band == 'nir':
-        return 0.389
-    else:
-        raise ValueError('"irradiance_band" must be one of ("par", "nir")')
-
-
 def calc_sunlit_fraction(cumulative_leaf_area_index: float, direct_black_extinction_coefficient: float) -> float:
     """Calculates the fraction of sunlit leaves at a given depth inside the canopy.
 

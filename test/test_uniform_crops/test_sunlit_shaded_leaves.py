@@ -123,21 +123,6 @@ def test_calc_canopy_reflectance_to_direct_irradiance_increases_as_direct_black_
     assert_values_trend(values=canopy_reflectance, trend='increasing')
 
 
-def test_calc_canopy_reflectance_to_diffuse_irradiance_returns_expected_values_for_par_band():
-    assert sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('par') == 0.057
-
-
-def test_calc_canopy_reflectance_to_diffuse_irradiance_returns_expected_values_for_nir_band():
-    assert sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('nir') == 0.389
-
-
-def test_calc_canopy_reflectance_to_diffuse_irradiance_raises_error_for_unexpected_irradiance_bands():
-    try:
-        sunlit_shaded_leaves.get_canopy_reflectance_to_diffuse_irradiance('some unexpected band')
-    except ValueError as e:
-        assert e.args[0] == '"irradiance_band" must be one of ("par", "nir")'
-
-
 def test_calc_sunlit_fraction_is_bounded_by_zero_and_unity():
     sunlit_fraction = [sunlit_shaded_leaves.calc_sunlit_fraction(cumulative_leaf_area_index, 0.5) for
                        cumulative_leaf_area_index in arange(0, 5, 0.1)]
