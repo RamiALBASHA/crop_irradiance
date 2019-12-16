@@ -1,7 +1,0 @@
-README.md
-setup.py
-src/crop_irradiance/__init__.py
-src/crop_irradiance.egg-info/PKG-INFO
-src/crop_irradiance.egg-info/SOURCES.txt
-src/crop_irradiance.egg-info/dependency_links.txt
-src/crop_irradiance.egg-info/top_level.txt
