@@ -62,7 +62,7 @@ def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering
     return direct_black_extinction_coefficient * sqrt(1 - leaf_scattering_coefficient)
 
 
-def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> [tuple]:
+def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> list:
     """Calculates the contributions from sky sectors (rings) to diffuse irradiance.
 
     Args:
