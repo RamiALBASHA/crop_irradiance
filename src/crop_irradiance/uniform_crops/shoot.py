@@ -84,7 +84,7 @@ class Shoot(dict):
         """Creates a class:`Shoot` object having either 'lumped' leaves or 'sunlit-shaded' leaves.
 
         Args:
-            leaves_category: one of ('lumped', sunlit-shaded')
+            leaves_category: one of ('lumped', 'sunlit-shaded')
             inputs: see class`LumpedInputs` and `SunlitShadedInputs`
             params: see class`LumpedParams` and `SunlitShadedParams`
 
@@ -117,7 +117,7 @@ class Shoot(dict):
         """Sets leaf layers of the shoot.
 
         Args:
-            leaves_category: one of ('lumped', sunlit-shaded')
+            leaves_category: one of ('lumped', 'sunlit-shaded')
         """
 
         upper_cumulative_leaf_area_index = 0.0
