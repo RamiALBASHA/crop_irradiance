@@ -1,2 +1,2 @@
 # irradiance
-a library for simulating irradiance absorption by crops canopies
+A model for simulating irradiance absorption by crops canopy
