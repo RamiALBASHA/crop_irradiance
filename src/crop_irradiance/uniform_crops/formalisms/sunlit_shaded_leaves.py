@@ -216,6 +216,39 @@ def calc_absorbed_diffuse_irradiance_at_given_depth(incident_diffuse_irradiance:
         - diffuse_extinction_coefficient * cumulative_leaf_area_index)
 
 
+def calc_absorbed_scattered_irradiance_at_given_depth(incident_direct_irradiance: float,
+                                                      cumulative_leaf_area_index: float,
+                                                      direct_extinction_coefficient: float,
+                                                      direct_black_extinction_coefficient: float,
+                                                      canopy_reflectance_to_direct_irradiance: float,
+                                                      leaf_scattering_coefficient: float) -> float:
+    """Calculates the absorbed scattered irradiance per unit leaf area at a given depth inside the canopy.
+
+    Args:
+        incident_direct_irradiance: [W m-2ground] incident direct (beam) irradiance at the top of the canopy
+        cumulative_leaf_area_index: [m2leaf m-2ground] cumulative downwards leaf area index
+        direct_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of direct (beam) irradiance
+        direct_black_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of direct (beam)
+            irradiance for black leaves
+        canopy_reflectance_to_direct_irradiance: [-] canopy reflectance to direct (beam) irradiance
+        leaf_scattering_coefficient: [-] leaf scattering coefficient
+
+    Returns:
+        [W m-2leaf] the absorbed diffuse irradiance per unit leaf area at the given depth inside the canopy
+
+    Notes:
+        This function is not used directly in crop_irradiance package. It was implemented so that it could be used by
+            dependent packages (see crop_energy_balance from https://github.com/RamiALBASHA/crop_energy_balance)
+    """
+    gain_fraction = (1.0 - canopy_reflectance_to_direct_irradiance) * direct_extinction_coefficient * exp(
+        -direct_extinction_coefficient * cumulative_leaf_area_index)
+
+    loss_fraction = (1.0 - leaf_scattering_coefficient) * direct_black_extinction_coefficient * exp(
+        -direct_black_extinction_coefficient * cumulative_leaf_area_index)
+
+    return incident_direct_irradiance * (gain_fraction - loss_fraction)
+
+
 def calc_sunlit_fraction_per_leaf_layer(upper_cumulative_leaf_area_index: float,
                                         leaf_layer_thickness: float,
                                         direct_black_extinction_coefficient: float) -> float:
