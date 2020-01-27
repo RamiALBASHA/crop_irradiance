@@ -287,7 +287,7 @@ def calc_absorbed_diffuse_irradiance_per_leaf_layer(incident_diffuse_irradiance:
         diffuse_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of diffuse irradiance
 
     Returns:
-        [W m-2ground] the absorbed diffuse irradiance by a leaf layer per unit ground area
+        [W m-2leaf] the absorbed diffuse irradiance by a leaf layer per unit ground area
     """
     absorbed_upper = calc_absorbed_diffuse_irradiance_at_given_depth(
         incident_diffuse_irradiance,
