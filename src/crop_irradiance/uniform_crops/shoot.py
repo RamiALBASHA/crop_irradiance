@@ -49,22 +49,10 @@ class SunlitShadedLeafLayer(LeafLayer):
                  params: SunlitShadedParams):
         LeafLayer.__init__(self, index, upper_cumulative_leaf_area_index, thickness)
 
-        self.sunlit_fraction = None
-        self.shaded_fraction = None
-
-        self.set_leaf_fractions(params)
-
-    def set_leaf_fractions(self,
-                           params: SunlitShadedParams):
-        upper_sunlit_fraction = sunlit_shaded_leaves.calc_sunlit_fraction(
-            cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+        self.sunlit_fraction = sunlit_shaded_leaves.calc_sunlit_fraction_per_leaf_layer(
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
             direct_black_extinction_coefficient=params.direct_black_extinction_coefficient)
-        lower_sunlit_fraction = sunlit_shaded_leaves.calc_sunlit_fraction(
-            cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index + self.thickness,
-            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient)
-
-        self.sunlit_fraction = (upper_sunlit_fraction - lower_sunlit_fraction) / (
-                params.direct_black_extinction_coefficient * self.thickness)
 
         self.shaded_fraction = 1.0 - self.sunlit_fraction
 
