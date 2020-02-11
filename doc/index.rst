@@ -10,6 +10,10 @@ Welcome to crop_irradiance's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   overview
+   uniform_crops
+   references
+
 
 
 Indices and tables
