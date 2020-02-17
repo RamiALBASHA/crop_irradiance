@@ -10,7 +10,6 @@ irradiance  :math:`I_{trans} \ [W \cdot m^{-2}_{ground}]` writes:
 .. math::
     :label: eq:toto
 
-
     I_{trans} = I_{inc} \cdot \exp(-k_{lumped} \cdot L)
 
 Given at this depth :math:`L` a finite leaf layer of a thickness :math:`dL \ [m^2_{leaf} \cdot m^{-2}_{ground}]`, the

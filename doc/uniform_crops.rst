@@ -19,12 +19,23 @@ of superposed leaf layers (:numref:`bigleaf_vs_layered` - right).
     Illustration of how a crop canopy may be represented following *bigleaf* and *layered* structures.
 
 
-Lumped, sunlit and shaded leaf fractions
-----------------------------------------
-We call an irradiance absorption 'lumped' when no distinction is made between the abso
+Sunlit and shaded leaf fractions compared to lumped leaves
+----------------------------------------------------------
+.. _lumped_vs_sunlit_shaded_picture:
+
+.. figure:: figs/lumped_vs_sunlit_shaded_picture.png
+    :align: center
+
+    Example of sunlit, shaded and lumped leaves.
+
+Leaves that are subject to the direct (beam) solar irradiance are called "sunlit"
+(:numref:`lumped_vs_sunlit_shaded_picture` - left). In contrast, leaves that are casted by other leaves are called
+"shaded" (:numref:`lumped_vs_sunlit_shaded_picture` - left). When no distinction is made between sunlit and shaded
+leaves, then we call leaves as "lumped" (:numref:`lumped_vs_sunlit_shaded_picture` - right).
+
+
 
 .. toctree::
-   :caption: Contents:
 
    absorbed_lumped
    absorbed_sunlit_shaded
