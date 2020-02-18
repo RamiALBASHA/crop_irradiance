@@ -73,3 +73,9 @@ Finally, the absorption of the leaf-scattered irradiance (:math:`I_{abs, \ s}`) 
                             -(1 - \sigma) \cdot k^{'}_{dir} \cdot \exp (-k^{'}_{dir} \cdot L)
 
                         \right]
+
+Now that irradiance absorption at a given depth is defined, we may calculate absorption by a leaf layer of a finite
+thickness :math:`\Delta L \ [m^2_{leaf} \cdot m^{-2}_{ground}]` by simply integrating equations **Eq. 17 to Eq. 21**,
+between depths :math:`L` and :math:`L + \Delta L `, then by dividing the result by :math:`\Delta L` in order to obtain
+absorption by unit leaf area. This yields the following equations:
+

@@ -25,17 +25,22 @@ coefficient of direct irradiance :math:`k^{'}_{dir} \ [m^2_{ground} \cdot m^{-2}
 with :math:`O_{av}` given as:
 
 .. math::
-    O_{av} =    \left \{
+    :label: oav
+    :flalign:
+
+    O_{av} =&   \left \{
                     \begin{array}{11}
-                        \sin \beta \cdot \cos \beta & ; \ \beta \geq \alpha \\
+                        \sin \beta \cdot \cos \beta
+                            & ; \ \beta \geq \alpha \\
                         \frac{2}{\pi} \cdot
                             \left(
-                                \sin \beta \cdot \cos \beta \cdot arcsin \frac{tan \beta}{tan \alpha}
-                                + \sqrt{\sin^2 \alpha + \sin^2 \beta}
-
+                                {\sin \beta \cdot \cos \beta \cdot \arcsin \frac{\tan \beta}{\tan \alpha}
+                                + \sqrt{\sin^2 \alpha + \sin^2 \beta}}
                             \right)
+                                & ; \ \beta < \alpha \\
                     \end{array}
                 \right.
+
 
 where :math:`\alpha \ [-]` is leaf inclination angle in radians.
 
