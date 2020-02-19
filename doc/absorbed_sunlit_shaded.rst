@@ -1,6 +1,20 @@
 Absorbed irradiance by sunlit and shaded leaf fractions
 =======================================================
 
+
+.. _fig_absorption_sunlit_shaded:
+
+.. figure:: figs/absorption_sunlit_shaded.png
+    :align: center
+
+    Leaf fractions and irradiance intensities considered for calculating irradiance absorption by *sunlit-shaded*
+    canopies.
+    :math:`L \ [m^2_{leaf} \cdot m^{-2}_{ground}]` is the downwards-cumulative leaf area index,
+    :math:`I_{abs, \ direct} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed direct (solar beam) irradiance,
+    :math:`I_{abs, \ diffuse} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed sky-diffused irradiance, and
+    :math:`I_{abs, \ scattered} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed leaf-scattered irradiance.
+
+
 .. _sunlit_shaded_flowchart:
 
 .. figure:: figs/sunlit_shaded_flowchart.png
