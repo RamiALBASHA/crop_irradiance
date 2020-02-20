@@ -6,6 +6,19 @@ irradiance :math:`I_{inc} \ [W \cdot m^{-2}_{ground}]` and the ability of the ca
 represented by the so-called so-called extinction coefficient property
 :math:`k_{lumped} \ [m^2_{ground} \cdot m^{-2}_{leaf}]`.
 
+.. _fig_absorption_lumped:
+
+.. figure:: figs/absorption_lumped.png
+    :align: center
+
+    *Lumped* irradiance absoption.
+    :math:`L \ [m^2_{leaf} \cdot m^{-2}_{ground}]` is downward-cumulative leaf area index,
+    :math:`I_{inc} \ [W \cdot m^{-2}_{ground}]` is the incident global irradiance,
+    :math:`I_{trans} \ [W \cdot m^{-2}_{ground}]` is the transmitted global irradiance below :math:`L`,
+    :math:`I_{abs, \ lumped} \ [W \cdot m^{-2}_{ground}]` is the absorbed *lumped* irradiance by leaves throughout
+    :math:`L`.
+
+
 Below a given depth :math:`L \ [m^2_{leaf} \cdot m^{-2}_{ground}]` inside the canopy, the flux density of the
 transmitted irradiance :math:`I_{trans} \ [W \cdot m^{-2}_{ground}]` is calculated as:
 
@@ -28,16 +41,18 @@ absorbed *lumped* irradiance :math:`d I_{abs} \ [W \cdot m^{-2}_{ground}]` can b
 Layered canopies
 ----------------
 
-.. _fig_absorption_lumped:
+.. _fig_absorption_lumped_layered:
 
-.. figure:: figs/absorption_lumped.png
+.. figure:: figs/absorption_lumped_layered.png
     :align: center
 
-    Illustration of the different leaf depths considered for the calculation of the absorbed lumped irradiance.
+    *Lumped* irradiance absoption by a leaf layer spanning between upper
+    :math:`L_u [m^2_{leaf} \cdot m^{-2}_{ground}]` and lower :math:`L_l [m^2_{leaf} \cdot m^{-2}_{ground}]` depths.
+
 
 The rate of the absorbed irradiance of a leaf layer that spands between an upper depth
 :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{ground}]` and a lower depth :math:`L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]`
-(:numref:`fig_absorption_lumped`) is obtained from :eq:`lumped_beer_absorbed_finite_layer` as:
+(:numref:`fig_absorption_lumped_layered`) is obtained from :eq:`lumped_beer_absorbed_finite_layer` as:
 
 .. math::
     :label: lumped_absorbed_layer_integral
@@ -53,9 +68,19 @@ which yields:
 
 Bigleaf canopies
 ----------------
-Irradiance absorption by a *bigleaf* canopy is simply derived from :eq:`lumped_absorbed_layered` by replacing
-:math:`L_u` and :math:`L_l` by 0 and the total leaf area index :math:`L_{t} \ [m^2_{leaf} \cdot m^{-2}_{ground}]`,
-respectively, which yields:
+
+.. _fig_absorption_lumped_bigleaf:
+
+.. figure:: figs/absorption_lumped_bigleaf.png
+    :align: center
+
+    *Lumped* irradiance absoption by a *bigleaf* canopy.
+    :math:`L_t [m^2_{leaf} \cdot m^{-2}_{ground}]` is the total leaf area index.
+
+
+Irradiance absorption by a *bigleaf* canopy (:numref:`fig_absorption_lumped_bigleaf`) is simply derived from
+:eq:`lumped_absorbed_layered` by replacing :math:`L_u` and :math:`L_l` by 0 and the total leaf area index
+:math:`L_{t} \ [m^2_{leaf} \cdot m^{-2}_{ground}]`, respectively, which yields:
 
 .. math::
     :label: lumped_absorbed_big_leaf
