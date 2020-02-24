@@ -1,14 +1,15 @@
 Absorbed irradiance by sunlit and shaded leaf fractions
 =======================================================
 
-Let's state first the following two assumptions that have long been used in crop models following
-**Goudriaan (1977; 1988; 1994; 2016)** (:numref:`absorption_sunlit_shaded_irradiance_terms`):
+Let's state first two assumptions that were set by **Goudriaan (1977)** and that are since still admitted in crop models
+(**Goudriaan 1988; 1994; 2016**):
 
-1.   sunlit leaves receive solar irradiance that comes directly from the solar beam (:math:`I_{direct}`), that is diffused
-by the sky/clouds (:math:`I_{diffuse}`), and that is scattered by other leaves (J. Goudriaan refers to as
-"second-hand" direct irradiance, :math:`I_{scattered}`)
 
-2.   shaded leaves do not receive the direct irradiance but do receive diffuse and scattered irradiance.
+#. | sunlit leaves receive solar irradiance that comes directly from the solar beam (:math:`I_{direct}`),
+   | that is diffused by the sky/clouds (:math:`I_{diffuse}`), and that is scattered by other leaves
+   | (J. Goudriaan refers to as "second-hand" direct irradiance, :math:`I_{scattered}`).
+
+#. shaded leaves do not receive the direct irradiance but do receive diffuse and scattered irradiance.
 
 
 .. _absorption_sunlit_shaded_irradiance_terms:
@@ -17,9 +18,9 @@ by the sky/clouds (:math:`I_{diffuse}`), and that is scattered by other leaves (
     :align: center
 
     Irradiance components that are absorbed by sunlit and shaded leaves.
-    :math:`I_{direct} \ [W \cdot m^{-2}_{ground}]` is solar direct (beam) irradiance,
-    :math:`I_{diffuse} \ [W \cdot m^{-2}_{ground}]` is sky-diffused irradiance, and
-    :math:`I_{scattered} \ [W \cdot m^{-2}_{ground}]` is leaf-scattered irradiance.
+    :math:`I_{direct} \ [W \cdot m^{-2}_{leaf}]` is solar direct (beam) irradiance,
+    :math:`I_{diffuse} \ [W \cdot m^{-2}_{leaf}]` is sky-diffused irradiance, and
+    :math:`I_{scattered} \ [W \cdot m^{-2}_{leaf}]` is leaf-scattered irradiance.
 
 
 You may have noticed in :numref:`absorption_sunlit_shaded_irradiance_terms` that the size of the scattered yellow
@@ -30,23 +31,23 @@ irradiance absorption by sunlit and shaded leaves depends on solar position. **C
 performed on infra-daily (typically hourly) basis.**
 
 
-Ok then... how much irradiance is absorbed depends on the angle between the leaves and the sun, right? but how?!
+Ok, so how much irradiance is absorbed depends on the angle between the leaves and the sun, but how?!
 The answer is through "extinction coefficients"! For instance, the higher the sun is in the sky, the more likely for
 solar beam to reach deeper leaves inside the canopy. Furthermore, the more uniformly distributed leaf angles are, the
 more irradiance they are likely to intercept (vertical leaves for instance do not absorb any irradiance at midday).
 Generally, it is assumed that leaf angles through the canopy follow a uniform distribution. **This means that if we took
 all leaves and organized them on a surface, this surface will be a hemisphere.** The consequence of this assumption is
-that the surface of leaves that intercepts the incoming irradiance will remain the same independently of the incident
-angle.
+that the surface of leaves that intercepts the incoming irradiance will remain the same independently from the incident
+angle (:numref:`leaf_angle_distribution`).
 
 
 .. _leaf_angle_distribution:
 
-.. figure:: figs/leaf_angles.png
+.. figure:: figs/leaf_angles_distribution.png
     :align: center
 
     Effect of the distribution of leaf angles on the interception to solar irradiance
-    (after **Goudriaan and van Laar, 1994**)
+    (after **Goudriaan and van Laar, 1994**). :math:`\beta \ [-]` is the angle of the solar elevation.
 
 
 
@@ -55,11 +56,10 @@ irradiance flux densities per unit leaf and ground areas.
 
 The absorbed irradiance per unit ground area is the product of, from the one hand, the absorbed irradiance per unit
 leaf area and, from the other hand, leaf area fraction (sunlit and shaded) per unit ground area.
-
-All of leaf area fractions and irradiance flux densities vary, generally, exponentially with depth, except the direct
-irradiance (:numref:`absorption_sunlit_shaded_fractions_and_intensities`). To simply understand this fact, think about
-sunflecks inside a canopy. All light spots shine with the same intensity, yet, the surface of these spots reduces
-strongly with depth. This is the case of direct irradiance and the sunlit fraction.
+Leaf area fractions and irradiance flux densities vary, in general, exponentially with depth, except the direct
+irradiance (:numref:`fig_absorption_sunlit_shaded_fractions_and_intensities`). To simply understand this fact, think about
+sunflecks inside a canopy: all light spots shine with the same intensity, yet, the surface of these spots reduces
+strongly with depth (). This is the case of direct irradiance and the sunlit fraction.
 
 
 .. _fig_absorption_sunlit_shaded_fractions_and_intensities:
@@ -73,6 +73,39 @@ strongly with depth. This is the case of direct irradiance and the sunlit fracti
     :math:`I_{abs, \ direct} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed direct (solar beam) irradiance,
     :math:`I_{abs, \ diffuse} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed sky-diffused irradiance, and
     :math:`I_{abs, \ scattered} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed leaf-scattered irradiance.
+
+
+.. _fig_sunlit_fraction_profile:
+
+.. figure:: figs/sunlit_fraction_profile.png
+    :align: center
+
+    The surface of sunlit leaves reduces stringly with depth inside the canopy from upper :math:`(a)` to lower
+    :math:`(b)` levels.
+
+
+Steps for calculating irradiance absorption
+-------------------------------------------
+
+The procedure for calculating irradiance absorption by sunlit and shaded leaves is summered in the following steps:
+
+#. | For each time step the solar elevation is calculated based on observer’s position and date.
+
+#. | The solar elevation, together with sky cover, determine the flux densities of direct and diffuse irradiance
+   | components that are incident on the top of the canopy.
+
+#. | The solar elevation determines beam and scattered beam irradiance penetration depths (when not null) inside the
+   | canopy. The corresponding extinction coefficients are calculated on **hourly basis** for direct irradiance,
+   | while the extinction coefficient of diffuse irradiance is assumed constant as long as the leaf area index is constant.
+
+#. | Canopy reflectance coefficients are calculated on hourly basis for direct irradiance, while reflectance coefficient
+   | for diffuse irradiance is assumed constant.
+
+#. | Finally, absorbed irradiance by each of sunlit and shaded leaf fractions are determined on a ground area basis.
+
+In the following sections, the calculation procedures for determining the extinction coefficients,
+reflectance coefficients and absorbed irradiance per sunlit and shade leaves will be given.
+The equations used therein have been developed by **Goudriaan and van Laar (1994)**.
 
 
 .. _sunlit_shaded_flowchart:
@@ -102,21 +135,6 @@ strongly with depth. This is the case of direct irradiance and the sunlit fracti
     total irradiance absorbed by sunlit and shaded leaves, respectively.
 
 
-The calculation procedure of absorbed direct and diffuse irradiance components is resumed as follows:
-
-*  For each time step the solar elevation is calculated based on observer’s position and the date;
-*  The solar elevation, together with sky cover, determine the flux densities of direct and diffuse irradiance
-components that are incident on the top of the canopy;
-*  The solar elevation determines beam and scattered beam irradiance penetration depths (when not null) inside the
-canopy. The corresponding extinction coefficients are calculated on **hourly basis** for direct irradiance,
-while the extinction coefficient of diffuse irradiance is assumed constant as long as the leaf area index is constant;
-*  Canopy reflectance coefficients are calculated on hourly basis for direct irradiance, while reflectance coefficient
-for diffuse irradiance is assumed constant;
-*  Finally, absorbed irradiance by each of sunlit and shaded leaf fractions are determined on a ground area basis.
-
-In the following sections, the calculation procedures for determining the extinction coefficients,
-reflectance coefficients and absorbed irradiance per sunlit and shade leaves will be given.
-The equations used therein have been developed by **Goudriaan and van Laar (1994)**.
 
 
 .. toctree::
