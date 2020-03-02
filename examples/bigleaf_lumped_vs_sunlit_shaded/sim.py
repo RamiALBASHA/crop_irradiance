@@ -4,12 +4,46 @@ import matplotlib.pyplot as plt
 from crop_irradiance.uniform_crops import inputs, params, shoot
 
 
-def plot_comparison(abs_irradiance_lumped: list, abs_irradiance_sunlit_shaded: list):
+def plot_comparison(abs_irradiance_lumped: list, abs_irradiance_sunlit: list, abs_irradiance_shaded: list):
+    abs_irradiance_sunlit_shaded = [sum(x) for x in zip(abs_irradiance_sunlit, abs_irradiance_shaded)]
     _, ax = plt.subplots()
     ax.plot(range(24), abs_irradiance_lumped, label='lumped')
     ax.plot(range(24), abs_irradiance_sunlit_shaded, label='sunlit_shaded')
     ax.legend()
     plt.savefig('absorbed_irradiance.png')
+    plt.close()
+
+
+def plot_absorbed_irradiance_separately(abs_irradiance_lumped: list, abs_irradiance_sunlit: list,
+                                        abs_irradiance_shaded: list):
+    hours = range(24)
+    _, (ax_left, ax_right) = plt.subplots(ncols=2, sharey='all', sharex='all', figsize=(6.4, 2.4))
+    ax_left.plot(hours, abs_irradiance_lumped, label='lumped')
+    ax_right.plot(hours, abs_irradiance_shaded, label='shaded')
+    ax_right.plot(hours, abs_irradiance_sunlit, label='sunlit')
+
+    for ax in (ax_left, ax_right):
+        ax.legend()
+        ax.set_xlabel('hours')
+    ax_left.set_ylabel('$\mathregular{absorbed\/irradiance\/[W \cdot m^{-2}_{ground}]}$')
+    plt.tight_layout()
+    plt.savefig('absorbed_irradiance2.png')
+    plt.close()
+
+
+def plot_leaf_fractions_separately(sunlit: list, shaded: list):
+    hours = range(24)
+    _, (ax_left, ax_right) = plt.subplots(ncols=2, sharey='all', sharex='all', figsize=(6.4, 2.4))
+    ax_left.plot(hours, [1] * 24, label='lumped')
+    ax_right.plot(hours, shaded, label='shaded')
+    ax_right.plot(hours, sunlit, label='sunlit')
+
+    for ax in (ax_left, ax_right):
+        ax.legend()
+        ax.set_xlabel('hours')
+    ax_left.set_ylabel('$\mathregular{leaf\/fraction\/[m^{2}_{leaf} \cdot m^{-2}_{ground}]}$')
+    plt.tight_layout()
+    plt.savefig('leaf_fractions.png')
     plt.close()
 
 
@@ -33,7 +67,10 @@ if __name__ == '__main__':
                                                      canopy_reflectance_to_diffuse_irradiance=0.057)
 
     abs_irradiance_lumped = []
-    abs_irradiance_sunlit_shaded = []
+    abs_irradiance_sunlit = []
+    abs_irradiance_shaded = []
+    fraction_sunlit = []
+    fraction_shaded = []
 
     for hour in range(24):
         direct_par = hourly_direct_par[hour]
@@ -58,6 +95,11 @@ if __name__ == '__main__':
             *[(layer.absorbed_irradiance['sunlit'], layer.absorbed_irradiance['shaded'])
               for index, layer in sunlit_shaded_canopy.items()])
 
-        abs_irradiance_sunlit_shaded.append(absorbed_sunlit_irradiance[0] + absorbed_shaded_irradiance[0])
+        abs_irradiance_sunlit.append(absorbed_sunlit_irradiance[0])
+        abs_irradiance_shaded.append(absorbed_shaded_irradiance[0])
+        fraction_sunlit.append(sunlit_shaded_canopy[0].sunlit_fraction)
+        fraction_shaded.append(sunlit_shaded_canopy[0].shaded_fraction)
 
-    plot_comparison(abs_irradiance_lumped, abs_irradiance_sunlit_shaded)
+    plot_comparison(abs_irradiance_lumped, abs_irradiance_sunlit, abs_irradiance_shaded)
+    plot_absorbed_irradiance_separately(abs_irradiance_lumped, abs_irradiance_sunlit, abs_irradiance_shaded)
+    plot_leaf_fractions_separately(fraction_sunlit, fraction_shaded)
