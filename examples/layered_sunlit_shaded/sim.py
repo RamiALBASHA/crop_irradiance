@@ -8,8 +8,8 @@ leaf_layers = {4: 0.09,
                6: 1.92,
                7: 3.22}
 
-sim_inputs = inputs.SunlitShadedInputs(leaf_layers=leaf_layers, incident_direct_irradiance=500,
-                                       incident_diffuse_irradiance=100, solar_inclination=pi / 3)
+sim_inputs = inputs.SunlitShadedInputs(leaf_layers=leaf_layers, incident_direct_irradiance=360,
+                                       incident_diffuse_irradiance=80, solar_inclination=pi / 3)
 
 sim_params = params.SunlitShadedParams(leaf_reflectance=0.08, leaf_transmittance=0.07,
                                        leaves_to_sun_average_projection=0.5, sky_sectors_number=3, sky_type='soc',
@@ -33,5 +33,5 @@ ax.set(xlabel='$\mathregular{irradiance\/[W \cdot m^{-2}_{ground}]}$',
        xlim=(0, 1.01 * max(sim_inputs.incident_direct_irradiance, sim_inputs.incident_diffuse_irradiance)),
        ylabel='layer index [-]', yticks=layer_index)
 ax.legend()
-plt.savefig(f'absorbed_irradiance.png')
+plt.savefig('absorbed_irradiance.png')
 plt.close()
