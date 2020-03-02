@@ -1,7 +1,7 @@
 from crop_irradiance.uniform_crops import inputs, params, shoot
 from matplotlib import pyplot as plt
 
-sim_inputs = inputs.LumpedInputs(leaf_layers={0: 6.43}, incident_irradiance=600)
+sim_inputs = inputs.LumpedInputs(leaf_layers={0: 6.43}, incident_irradiance=440)
 sim_params = params.LumpedParams(extinction_coefficient=0.5)
 canopy = shoot.Shoot(leaves_category='lumped', inputs=sim_inputs, params=sim_params)
 

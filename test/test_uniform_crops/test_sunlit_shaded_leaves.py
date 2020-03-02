@@ -379,31 +379,41 @@ def test_calc_absorbed_diffuse_irradiance_per_leaf_layer_is_positive():
     layer_thickness = 1.0
     upper_cumulative_leaf_area_index = 3.0
     canopy_reflectance_to_diffuse_irradiance = 0.057
+    direct_black_extinction_coefficient = 0.5
     diffuse_extinction_coefficient = 0.64
     absorbed_irradiance = [
-        sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_per_leaf_layer(
-            incident_diffuse_irradiance, upper_cumulative_leaf_area_index, layer_thickness,
-            canopy_reflectance_to_diffuse_irradiance, diffuse_extinction_coefficient)
+        sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_sunlit_leaf_layer(
+            incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index,
+            layer_thickness,
+            canopy_reflectance_to_diffuse_irradiance,
+            direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient)
         for incident_diffuse_irradiance in range(10, 100, 10)]
 
     assert all([x >= 0 for x in absorbed_irradiance])
 
 
-def test_calc_absorbed_diffuse_irradiance_per_leaf_layer_decreases_as_layer_thickness_increases():
+def test_calc_absorbed_diffuse_irradiance_per_leaf_layer_increases_as_layer_thickness_increases():
     incident_diffuse_irradiance = 10.0
     upper_cumulative_leaf_area_index = 3.0
     canopy_reflectance_to_diffuse_irradiance = 0.057
+    direct_black_extinction_coefficient = 0.5
     diffuse_extinction_coefficient = 0.64
     absorbed_irradiance = [
-        sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_per_leaf_layer(
-            incident_diffuse_irradiance, upper_cumulative_leaf_area_index, layer_thickness,
-            canopy_reflectance_to_diffuse_irradiance, diffuse_extinction_coefficient)
+        sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_sunlit_leaf_layer(
+            incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index,
+            layer_thickness,
+            canopy_reflectance_to_diffuse_irradiance,
+            direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient)
         for layer_thickness in arange(0.1, 1, 0.1)]
 
-    assert_values_trend(values=absorbed_irradiance, trend='decreasing')
+    assert_values_trend(values=absorbed_irradiance, trend='increasing')
 
 
-def test_calc_absorbed_scattered_irradiance_per_leaf_layer_decreases_as_leaf_layer_thickness_increases():
+def test_calc_absorbed_scattered_irradiance_per_leaf_layer_increases_as_leaf_layer_thickness_increases():
     incident_direct_irradiance = 500.0
     upper_cumulative_leaf_area_index = 1.0
     direct_extinction_coefficient = 0.46
@@ -411,7 +421,7 @@ def test_calc_absorbed_scattered_irradiance_per_leaf_layer_decreases_as_leaf_lay
     canopy_reflectance_to_direct_irradiance = 0.027
     leaf_scattering_coefficient = 0.15
 
-    absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_per_leaf_layer(
+    absorbed_irradiance = [sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_sunlit_leaf_layer(
         incident_direct_irradiance,
         upper_cumulative_leaf_area_index,
         leaf_layer_thickness,
@@ -421,4 +431,4 @@ def test_calc_absorbed_scattered_irradiance_per_leaf_layer_decreases_as_leaf_lay
         leaf_scattering_coefficient)
         for leaf_layer_thickness in arange(0.1, 3, 0.1)]
 
-    assert_values_trend(values=absorbed_irradiance, trend='decreasing')
+    assert_values_trend(values=absorbed_irradiance, trend='increasing')
