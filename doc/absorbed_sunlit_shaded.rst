@@ -336,6 +336,7 @@ For a leaf layer spanning between depths :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{
         \\
         & + I_{inc, \ diffuse} \cdot
         \left( 1 - \rho_{diffuse} \right) \cdot
+        \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
         \left(
             \begin{array}
                 + e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_u } \\
@@ -347,19 +348,20 @@ For a leaf layer spanning between depths :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{
         \left[
             \begin{array}{1}
                 \left( 1 - \rho_{direct} \right) \cdot
+                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
                 \left(
                     \begin{array}
                         + e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_u }    \\
                         - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_l }
                     \end{array}
-                \right) \cdot
-                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \\
+                \right)
+                \\
                 - (1 - \sigma) \cdot
+                \frac{1}{2} \cdot
                 \left(
                     e ^ {- 2 \cdot k_{direct, \ black} \cdot L_u }
                     - e ^ {-2 \cdot k_{direct, \ black} \cdot L_l }
-                \right) \cdot
-                \frac{1}{2}
+                \right)
             \end{array}
         \right]
 
@@ -379,7 +381,8 @@ For a leaf layer spanning between depths :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{
                     \end{array}
                 \right)
                 \\
-                - \left(
+                - \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+                \left(
                     \begin{array}
                         + e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_u } \\
                         - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_l }
@@ -401,15 +404,16 @@ For a leaf layer spanning between depths :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{
                             \end{array}
                         \right)
                         \\
-                        - \left(
+                        - \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+                        \left(
                             \begin{array}
                                 + e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_u }    \\
                                 - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_l }
                             \end{array}
                         \right)
                     \end{array}
-                \right) \cdot
-                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \\
+                \right)
+                \\
                 - (1 - \sigma) \cdot
                 \left(
                     \begin{array}{1}
@@ -417,13 +421,13 @@ For a leaf layer spanning between depths :math:`L_u \ [m^2_{leaf} \cdot m^{-2}_{
                             e ^ {- k_{direct, \ black} \cdot L_u } - e ^ {- k_{direct, \ black} \cdot L_l }
                         \right)
                         \\
-                        - \left(
+                        - \frac{1}{2} \cdot
+                        \left(
                             e ^ {- 2 \cdot k_{direct, \ black} \cdot L_u }
                             - e ^ {-2 \cdot k_{direct, \ black} \cdot L_l }
                         \right)
                     \end{array}
-                \right) \cdot
-                \frac{1}{2}
+                \right)
             \end{array}
         \right]
 
@@ -443,6 +447,7 @@ For a bigleaf canopy equations :eq:`sunlit_absorbed_layered` and :eq:`shaded_abs
         \\
         & + I_{inc, \ diffuse} \cdot
         \left( 1 - \rho_{diffuse} \right) \cdot
+        \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
         \left(
             \begin{array}
                 + 1
@@ -454,19 +459,20 @@ For a bigleaf canopy equations :eq:`sunlit_absorbed_layered` and :eq:`shaded_abs
         \left[
             \begin{array}{1}
                 \left( 1 - \rho_{direct} \right) \cdot
+                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
                 \left(
                     \begin{array}
                         + 1
                         - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_t }
                     \end{array}
-                \right) \cdot
-                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \\
+                \right)
+                \\
                 - (1 - \sigma) \cdot
+                \frac{1}{2} \cdot
                 \left(
                     1
                     - e ^ {-2 \cdot k_{direct, \ black} \cdot L_t }
-                \right) \cdot
-                \frac{1}{2}
+                \right)
             \end{array}
         \right]
 
@@ -486,7 +492,8 @@ For a bigleaf canopy equations :eq:`sunlit_absorbed_layered` and :eq:`shaded_abs
                     \end{array}
                 \right)
                 \\
-                - \left(
+                - \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+                \left(
                     \begin{array}
                         + 1
                         - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_t }
@@ -508,27 +515,30 @@ For a bigleaf canopy equations :eq:`sunlit_absorbed_layered` and :eq:`shaded_abs
                             \end{array}
                         \right)
                         \\
-                        - \left(
+                        - \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+                        \left(
                             \begin{array}
                                 + 1
                                 - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_t }
                             \end{array}
                         \right)
                     \end{array}
-                \right) \cdot
-                \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \\
+                \right)
+                \\
                 - (1 - \sigma) \cdot
                 \left(
                     \begin{array}{1}
                         \left(
-                            1 - e ^ {- k_{direct, \ black} \cdot L_t }
+                            1
+                            - e ^ {- k_{direct, \ black} \cdot L_t }
                         \right)
                         \\
-                        - \left(
-                            1 - e ^ {-2 \cdot k_{direct, \ black} \cdot L_t }
+                        - \frac{1}{2} \cdot
+                        \left(
+                            1
+                            - e ^ {-2 \cdot k_{direct, \ black} \cdot L_t }
                         \right)
                     \end{array}
-                \right) \cdot
-                \frac{1}{2}
+                \right)
             \end{array}
         \right]
