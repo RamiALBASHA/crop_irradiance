@@ -56,10 +56,16 @@ class SunlitShadedLeafLayer(LeafLayer):
 
         self.shaded_fraction = 1.0 - self.sunlit_fraction
 
+        self.abs_direct_by_sunlit = None
+        self.abs_diffuse_by_sunlit = None
+        self.abs_scattered_by_sunlit = None
+        self.abs_diffuse_by_shaded = None
+        self.abs_scattered_by_shaded = None
+
     def calc_absorbed_irradiance(self,
                                  inputs: SunlitShadedInputs,
                                  params: SunlitShadedParams):
-        self.absorbed_irradiance = \
+        self.absorbed_irradiance = (
             sunlit_shaded_leaves.absorbed_irradiance_by_sunlit_and_shaded_leaves_per_leaf_layer(
                 incident_direct_irradiance=inputs.incident_direct_irradiance,
                 incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
@@ -70,7 +76,53 @@ class SunlitShadedLeafLayer(LeafLayer):
                 canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
                 direct_extinction_coefficient=params.direct_extinction_coefficient,
                 direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient)
+                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+
+        self.abs_direct_by_sunlit = (
+            sunlit_shaded_leaves.calc_absorbed_direct_irradiance_by_sunlit_leaf_layer(
+                incident_direct_irradiance=inputs.incident_direct_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                leaf_scattering_coefficient=params.leaf_scattering_coefficient,
+                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient))
+
+        self.abs_diffuse_by_sunlit = (
+            sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_sunlit_leaf_layer(
+                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+
+        self.abs_scattered_by_sunlit = (
+            sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_sunlit_leaf_layer(
+                incident_direct_irradiance=inputs.incident_direct_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                direct_extinction_coefficient=params.direct_extinction_coefficient,
+                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+                leaf_scattering_coefficient=params.leaf_scattering_coefficient))
+
+        self.abs_diffuse_by_shaded = (
+            sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_shaded_leaf_layer(
+                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+
+        self.abs_scattered_by_shaded = (
+            sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_shaded_leaf_layer(
+                incident_direct_irradiance=inputs.incident_direct_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                direct_extinction_coefficient=params.direct_extinction_coefficient,
+                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+                leaf_scattering_coefficient=params.leaf_scattering_coefficient))
 
 
 class Shoot(dict):
@@ -101,7 +153,6 @@ class Shoot(dict):
         self._leaf_layer_indexes = list(reversed(sorted(inputs.leaf_layers.keys())))
 
         self.set_leaf_layers(leaves_category)
-        self.calc_absorbed_irradiance()
 
     def __getitem__(self, key):
         val = dict.__getitem__(self, key)
