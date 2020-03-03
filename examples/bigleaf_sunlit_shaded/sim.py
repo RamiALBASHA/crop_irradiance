@@ -14,6 +14,7 @@ sim_params = params.SunlitShadedParams(leaf_reflectance=0.08, leaf_transmittance
 sim_params.update(sim_inputs)
 
 canopy = shoot.Shoot(leaves_category='sunlit-shaded', inputs=sim_inputs, params=sim_params)
+canopy.calc_absorbed_irradiance()
 
 layer_index, absorbed_sunlit_irradiance, absorbed_shaded_irradiance = zip(
     *[(index, layer.absorbed_irradiance['sunlit'], layer.absorbed_irradiance['shaded'])
