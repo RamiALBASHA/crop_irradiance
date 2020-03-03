@@ -65,8 +65,8 @@ strongly with depth (:numref:`fig_sunlit_fraction_profile`).
     :align: center
 
     Leaf fractions and irradiance intensities considered for calculating irradiance absorption by *sunlit-shaded*
-    canopies.
-    :math:`L \ [m^2_{leaf} \cdot m^{-2}_{ground}]` is the downwards-cumulative leaf area index,
+    canopies. Simulations are performed for a canopy composed of 8 leaf layers having each an area thickness of
+    :math:`1 \ [m^2_{leaf} \cdot m^{-2}_{ground}]`.
     :math:`I_{abs, \ direct} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed direct (solar beam) irradiance,
     :math:`I_{abs, \ diffuse} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed sky-diffused irradiance, and
     :math:`I_{abs, \ scattered} \ [W \cdot m^{-2}_{leaf}]` is flux density of the absorbed leaf-scattered irradiance.
