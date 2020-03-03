@@ -125,11 +125,18 @@ finite sectors that send, each, diffuse irradiance as if it were a beam irradian
 rings. The extinction coefficient :math:`k_{diffuse}` is given as:
 
 .. math::
-    :labe: diffuse_extinction_coefficient_general
-    k_{diffuse} = - \frac{1}{L_t} \cdot \ln
-                        \left(
-                            \Sigma_i^n {c_i \cdot e^\left( {- \frac{0.5}{\sin \beta_{sky, \ i} \cdot \sqrt{1 - \sigma}} \cdot L_t \right)}
-                        \left)
+    :label: diffuse_extinction_coefficient_general
+
+    k_{diffuse} =
+    - \frac{1}{L_t} \cdot \ln
+        \left(
+            \Sigma_i^n {
+            \left(
+            c_i \cdot
+            e ^ {- \frac{0.5}{\sin \beta_{sky, \ i}} \cdot \sqrt{1 - \sigma} \cdot L_t}
+            \right)
+            }
+        \right)
 
 where
 :math:`L_t \ [m^2_{leaf} \ m^{-2}_{ground}]` is the canopy total leaf area index,
