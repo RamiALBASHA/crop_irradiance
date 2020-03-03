@@ -78,6 +78,7 @@ if __name__ == '__main__':
 
         inputs_lumped = inputs.LumpedInputs(leaf_layers={0: 6.43}, incident_irradiance=direct_par + diffuse_par)
         canopy_lumped = shoot.Shoot(leaves_category='lumped', inputs=inputs_lumped, params=params_lumped)
+        canopy_lumped.calc_absorbed_irradiance()
 
         abs_irradiance_lumped.append([layer.absorbed_irradiance['lumped'] for layer in canopy_lumped.values()][0])
 
@@ -90,6 +91,7 @@ if __name__ == '__main__':
 
         sunlit_shaded_canopy = shoot.Shoot(leaves_category='sunlit-shaded', inputs=sunlit_shaded_inputs,
                                            params=sunlit_shaded_params)
+        sunlit_shaded_canopy.calc_absorbed_irradiance()
 
         absorbed_sunlit_irradiance, absorbed_shaded_irradiance = zip(
             *[(layer.absorbed_irradiance['sunlit'], layer.absorbed_irradiance['shaded'])
