@@ -60,7 +60,7 @@ solar_inclination = [-16.22, -16.22, -16.22, -15.39, -9.49, -1.91, 6.65, 15.92, 
 
 if __name__ == '__main__':
 
-    params_lumped = params.LumpedParams(extinction_coefficient=0.5)
+    params_lumped = params.LumpedParams(model='beer', extinction_coefficient=0.5)
     sunlit_shaded_params = params.SunlitShadedParams(leaf_reflectance=0.07, leaf_transmittance=0.0,
                                                      leaves_to_sun_average_projection=0.5, sky_sectors_number=3,
                                                      sky_type='soc',
@@ -76,7 +76,8 @@ if __name__ == '__main__':
         direct_par = hourly_direct_par[hour]
         diffuse_par = hourly_diffuse_par[hour]
 
-        inputs_lumped = inputs.LumpedInputs(leaf_layers={0: 6.43}, incident_irradiance=direct_par + diffuse_par)
+        inputs_lumped = inputs.LumpedInputs(model='beer', leaf_layers={0: 6.43},
+                                            incident_irradiance=direct_par + diffuse_par)
         canopy_lumped = shoot.Shoot(leaves_category='lumped', inputs=inputs_lumped, params=params_lumped)
         canopy_lumped.calc_absorbed_irradiance()
 

@@ -6,8 +6,8 @@ leaf_layers = {4: 0.09,
                6: 1.92,
                7: 3.22}
 
-sim_inputs = inputs.LumpedInputs(leaf_layers=leaf_layers, incident_irradiance=440)
-sim_params = params.LumpedParams(extinction_coefficient=0.5)
+sim_inputs = inputs.LumpedInputs(model='beer', leaf_layers=leaf_layers, incident_irradiance=440)
+sim_params = params.LumpedParams(model='beer', extinction_coefficient=0.5)
 canopy = shoot.Shoot(leaves_category='lumped', inputs=sim_inputs, params=sim_params)
 canopy.calc_absorbed_irradiance()
 
