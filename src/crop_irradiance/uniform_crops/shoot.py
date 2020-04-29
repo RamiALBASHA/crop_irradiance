@@ -29,16 +29,11 @@ class LumpedLeafLayer(LeafLayer):
     def calc_absorbed_irradiance(self,
                                  inputs: LumpedInputs,
                                  params: LumpedParams):
-        upper_absorbed_irradiance = lumped_leaves.calc_beer_absorption(
+        self.absorbed_irradiance['lumped'] = lumped_leaves.calc_beer_absorption(
             incident_irradiance=inputs.incident_irradiance,
             extinction_coefficient=params.extinction_coefficient,
-            leaf_area_index=self.upper_cumulative_leaf_area_index)
-        lower_absorbed_irradiance = lumped_leaves.calc_beer_absorption(
-            incident_irradiance=inputs.incident_irradiance,
-            extinction_coefficient=params.extinction_coefficient,
-            leaf_area_index=self.upper_cumulative_leaf_area_index + self.thickness)
-
-        self.absorbed_irradiance['lumped'] = (lower_absorbed_irradiance - upper_absorbed_irradiance)
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness)
 
 
 class SunlitShadedLeafLayer(LeafLayer):
