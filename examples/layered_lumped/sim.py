@@ -1,5 +1,3 @@
-from math import pi
-
 from crop_irradiance.uniform_crops import inputs, params, shoot
 from matplotlib import pyplot as plt
 
@@ -14,7 +12,7 @@ canopy = shoot.Shoot(leaves_category='lumped', inputs=sim_inputs, params=sim_par
 canopy.calc_absorbed_irradiance()
 
 layer_index, absorbed_irradiance = zip(
-       *[(index, layer.absorbed_irradiance['lumped']) for index, layer in canopy.items()])
+    *[(index, layer.absorbed_irradiance['lumped']) for index, layer in canopy.items()])
 
 _, ax = plt.subplots()
 ax.vlines(sim_inputs.incident_irradiance, ymin=min(leaf_layers.keys()), ymax=max(leaf_layers.keys()), label='incident')
