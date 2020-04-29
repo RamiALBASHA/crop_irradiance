@@ -29,11 +29,22 @@ class LumpedLeafLayer(LeafLayer):
     def calc_absorbed_irradiance(self,
                                  inputs: LumpedInputs,
                                  params: LumpedParams):
-        self.absorbed_irradiance['lumped'] = lumped_leaves.calc_beer_absorption(
-            incident_irradiance=inputs.incident_irradiance,
-            extinction_coefficient=params.extinction_coefficient,
-            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-            leaf_layer_thickness=self.thickness)
+        if params.model == 'beer':
+            self.absorbed_irradiance['lumped'] = lumped_leaves.calc_beer_absorption(
+                incident_irradiance=inputs.incident_irradiance,
+                extinction_coefficient=params.extinction_coefficient,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness)
+        elif params.model == 'de_pury':
+            self.absorbed_irradiance['lumped'] = lumped_leaves.calc_de_pury_absorption(
+                incident_direct_irradiance=inputs.incident_direct_irradiance,
+                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+                leaf_layer_thickness=self.thickness,
+                direct_extinction_coefficient=params.direct_extinction_coefficient,
+                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient,
+                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance)
 
 
 class SunlitShadedLeafLayer(LeafLayer):

@@ -5,10 +5,12 @@ from crop_irradiance.uniform_crops.inputs import LumpedInputs, SunlitShadedInput
 class LumpedParams:
     def __init__(self, model: str, **kwargs):
 
-        if model == 'beer':
+        self.model = model
+
+        if self.model == 'beer':
             self.extinction_coefficient = kwargs['extinction_coefficient']
 
-        elif model == 'de_pury':
+        elif self.model == 'de_pury':
             self.canopy_reflectance_to_diffuse_irradiance = kwargs['canopy_reflectance_to_diffuse_irradiance']
             self.leaves_to_sun_average_projection = kwargs['leaves_to_sun_average_projection']
             self.sky_sectors_number = kwargs['sky_sectors_number']
