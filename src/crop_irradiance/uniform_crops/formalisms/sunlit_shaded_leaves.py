@@ -385,7 +385,7 @@ def calc_absorbed_diffuse_irradiance_by_shaded_leaf_layer(incident_diffuse_irrad
         diffuse_extinction_coefficient: [m2ground m-2leaf] the extinction coefficient of diffuse irradiance
 
     Returns:
-        [W m-2ground] the absorbed diffuse irradiance by a sunlit leaf layer per unit ground area
+        [W m-2ground] the absorbed diffuse irradiance by a shaded leaf layer per unit ground area
     """
     diffuse_and_direct_extinction_coeffcient = diffuse_extinction_coefficient + direct_black_extinction_coefficient
 
