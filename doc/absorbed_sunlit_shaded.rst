@@ -3,7 +3,7 @@
 Absorbed irradiance by sunlit and shaded leaf fractions
 =======================================================
 
-Let's state first the following two assumptions **(Goudriaan, 1977; 1988; 1994; 2016**):
+Let's state first the following two assumptions **(Goudriaan, 1977; 1988; 1994; 2016)**:
 
 #. | Sunlit leaves receive solar irradiance that comes from the sun (solar beam, :math:`I_{direct}`),
    | from the sky and/or clouds (sky-diffused, :math:`I_{diffuse}`), and from leaves

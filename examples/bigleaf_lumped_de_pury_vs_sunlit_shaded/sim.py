@@ -60,8 +60,12 @@ solar_inclination = [-16.22, -16.22, -16.22, -15.39, -9.49, -1.91, 6.65, 15.92, 
 
 if __name__ == '__main__':
 
-    params_lumped = params.LumpedParams(model='beer', extinction_coefficient=0.5)
-    sunlit_shaded_params = params.SunlitShadedParams(leaf_reflectance=0.07, leaf_transmittance=0.0,
+    params_lumped = params.LumpedParams(model='de_pury',
+                                        leaf_reflectance=0.07, leaf_transmittance=0.0,
+                                        leaves_to_sun_average_projection=0.5, sky_sectors_number=3,
+                                        sky_type='soc',
+                                        canopy_reflectance_to_diffuse_irradiance=0.057)
+    params_sunlit_shaded = params.SunlitShadedParams(leaf_reflectance=0.07, leaf_transmittance=0.0,
                                                      leaves_to_sun_average_projection=0.5, sky_sectors_number=3,
                                                      sky_type='soc',
                                                      canopy_reflectance_to_diffuse_irradiance=0.057)
@@ -76,32 +80,38 @@ if __name__ == '__main__':
         direct_par = hourly_direct_par[hour]
         diffuse_par = hourly_diffuse_par[hour]
 
-        inputs_lumped = inputs.LumpedInputs(model='beer', leaf_layers={0: 6.43},
-                                            incident_irradiance=direct_par + diffuse_par)
+        inputs_lumped = inputs.LumpedInputs(model='de_pury',
+                                            leaf_layers={0: 6.43},
+                                            incident_direct_irradiance=direct_par,
+                                            incident_diffuse_irradiance=diffuse_par,
+                                            solar_inclination=radians(solar_inclination[hour]))
+
+        params_lumped.update(inputs_lumped)
+
         canopy_lumped = shoot.Shoot(leaves_category='lumped', inputs=inputs_lumped, params=params_lumped)
         canopy_lumped.calc_absorbed_irradiance()
 
-        abs_irradiance_lumped.append([layer.absorbed_irradiance['lumped'] for layer in canopy_lumped.values()][0])
+        abs_irradiance_lumped.append([layer.absorbed_irradiance['lumped'] for layer in canopy_lumped.values()])
 
-        sunlit_shaded_inputs = inputs.SunlitShadedInputs(leaf_layers={0: 6.43},
+        inputs_sunlit_shaded = inputs.SunlitShadedInputs(leaf_layers={0: 6.43},
                                                          incident_direct_irradiance=direct_par,
                                                          incident_diffuse_irradiance=diffuse_par,
                                                          solar_inclination=radians(solar_inclination[hour]))
 
-        sunlit_shaded_params.update(sunlit_shaded_inputs)
+        params_sunlit_shaded.update(inputs_sunlit_shaded)
 
-        sunlit_shaded_canopy = shoot.Shoot(leaves_category='sunlit-shaded', inputs=sunlit_shaded_inputs,
-                                           params=sunlit_shaded_params)
-        sunlit_shaded_canopy.calc_absorbed_irradiance()
+        canopy_sunlit_shaded = shoot.Shoot(leaves_category='sunlit-shaded', inputs=inputs_sunlit_shaded,
+                                           params=params_sunlit_shaded)
+        canopy_sunlit_shaded.calc_absorbed_irradiance()
 
         absorbed_sunlit_irradiance, absorbed_shaded_irradiance = zip(
             *[(layer.absorbed_irradiance['sunlit'], layer.absorbed_irradiance['shaded'])
-              for index, layer in sunlit_shaded_canopy.items()])
+              for index, layer in canopy_sunlit_shaded.items()])
 
         abs_irradiance_sunlit.append(absorbed_sunlit_irradiance[0])
         abs_irradiance_shaded.append(absorbed_shaded_irradiance[0])
-        fraction_sunlit.append(sunlit_shaded_canopy[0].sunlit_fraction)
-        fraction_shaded.append(sunlit_shaded_canopy[0].shaded_fraction)
+        fraction_sunlit.append(canopy_sunlit_shaded[0].sunlit_fraction)
+        fraction_shaded.append(canopy_sunlit_shaded[0].shaded_fraction)
 
     plot_comparison(abs_irradiance_lumped, abs_irradiance_sunlit, abs_irradiance_shaded)
     plot_absorbed_irradiance_separately(abs_irradiance_lumped, abs_irradiance_sunlit, abs_irradiance_shaded)

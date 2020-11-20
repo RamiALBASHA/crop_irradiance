@@ -1,5 +1,10 @@
 Absorbed lumped irradiance
 ==========================
+Absorption of lumped irradiance can be calculated following two models, respectively Beer's law
+**(Monsi and Saeki, 1953)** and **de Pury et al. (1997)**.
+
+Beer's law
+----------
 **Monsi and Saeki (1953)** were probably the first to use Beer-Lambert's law in order to simulate irradiance transfer
 through crop canopies. Following this approach, leaves are assumed to form a continuous turbid medium that intercepts the incident
 irradiance :math:`I_{inc} \ [W \cdot m^{-2}_{ground}]` and the ability of the canopy to transfer irradiance is
@@ -39,7 +44,7 @@ absorbed *lumped* irradiance :math:`d I_{abs} \ [W \cdot m^{-2}_{ground}]` can b
 
 
 Layered canopies
-----------------
+++++++++++++++++
 
 .. _fig_absorption_lumped_layered:
 
@@ -67,7 +72,7 @@ which yields:
     I_{abs, \ lumped} = I_{inc} \cdot \left[ \exp(-k_{lumped} \cdot L_u) - exp(-k_{lumped} \cdot L_l) \right]
 
 Bigleaf canopies
-----------------
+++++++++++++++++
 
 .. _fig_absorption_lumped_bigleaf:
 
@@ -87,3 +92,65 @@ Irradiance absorption by a *bigleaf* canopy (:numref:`fig_absorption_lumped_bigl
 
     I_{abs, \ lumped} = I_{inc} \cdot \left[1 - \exp(-k_{lumped} \cdot L_t) \right]
 
+
+de Pury and Farquhar (1997)
+---------------------------
+This model is simplified from Goudriaan models **(Goudriaan, 1977; 1988; 1994; 2016)** by disregarding the scattering
+effect of leaves. **de Pury and Farquhar (1997)** calculated the absorbed lumped irradiance as the sum of absorbed
+direct and diffuse irradiance rates, respectively :math:`I_{abs, \ direct}` and
+:math:`I_{abs, \ diffuse} \ [W \cdot m^{-2}_{ground}]`:
+
+.. math::
+    :label: lumped_de_pury
+
+    I_{abs, \ lumped} = I_{abs, \ direct} + I_{abs, \ diffuse}
+
+
+Layered canopies
+++++++++++++++++
+On a ground area basis, the absorbed lumped irradiance by a leaf layer spanning between depths
+:math:`L_u` and :math:`L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]` writes:
+
+.. math::
+    :label: lumped_layered_de_pury
+
+    I_{abs, \ lumped}
+        &= I_{inc, \ direct} \cdot
+            (1 - \rho_{direct}) \cdot
+            \left(
+                \exp(-k_{direct} \cdot L_u) - \exp(-k_{direct} \cdot L_l)
+            \right) \\
+        &+ I_{inc, \ diffuse} \cdot
+            (1 - \rho_{diffuse}) \cdot
+            \left(
+                \exp(-k_{diffuse} \cdot L_u) - \exp(-k_{diffuse} \cdot L_l)
+            \right)
+
+where
+:math:`I_{inc, \ direct} \ [W \cdot m^{-2}_{ground}]` is the incident direct (beam) irradiance,
+:math:`I_{inc, \ diffuse} \ [W \cdot m^{-2}_{ground}]` is the incident sky-diffused irradiance,
+:math:`\rho_{direct} \ [-]` is canopy reflectance to direct irradiance,
+:math:`\rho_{diffuse} \ [-]` is canopy reflectance to diffuse irradiance,
+:math:`k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of the direct irradiance, and
+:math:`k_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of the diffuse irradiance. These
+variables are thoroughly described in :doc:`_absorbed_sunlit_shaded`.
+
+
+Bigleaf canopies
+++++++++++++++++
+For a bigleaf canopy, equation :eq:`lumped_layered_de_pury` become:
+
+.. math::
+    :label: lumped_big_leaf_de_pury
+
+    I_{abs, \ lumped}
+        &= I_{inc, \ direct} \cdot
+            (1 - \rho_{direct}) \cdot
+            \left(
+                1 - \exp(-k_{direct} \cdot L_t)
+            \right) \\
+        &+ I_{inc, \ diffuse} \cdot
+            (1 - \rho_{diffuse}) \cdot
+            \left(
+                1 - \exp(-k_{diffuse} \cdot L_t)
+            \right)
