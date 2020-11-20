@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="crop_irradiance",
-    version="0.0.1",
+    version="1.0.0",
     author="Rami ALBASHA",
     author_email="rami albacha at yahoo dot com",
     description="a library for simulating irradiance absorption by crops canopies",
