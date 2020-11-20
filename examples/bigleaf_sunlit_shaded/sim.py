@@ -22,9 +22,9 @@ layer_index, absorbed_sunlit_irradiance, absorbed_shaded_irradiance = zip(
 
 _, ax = plt.subplots()
 ax.vlines(sim_inputs.incident_direct_irradiance,
-          ymin=-0.02, ymax=0.02, label='incident sunlit', color='y')
+          ymin=-0.02, ymax=0.02, label='incident direct', color='y')
 ax.vlines(sim_inputs.incident_diffuse_irradiance,
-          ymin=-0.02, ymax=0.02, label='incident shaded', color='r')
+          ymin=-0.02, ymax=0.02, label='incident diffuse', color='r')
 ax.plot(absorbed_sunlit_irradiance, layer_index, 'yo-', label='absorbed sunlit')
 ax.plot(absorbed_shaded_irradiance, layer_index, 'ro-', label='absorbed shaded')
 ax.set(xlabel=r'$\mathregular{irradiance\/[W \cdot m^{-2}_{ground}]}$',
