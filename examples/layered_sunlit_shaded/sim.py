@@ -25,9 +25,9 @@ layer_index, absorbed_sunlit_irradiance, absorbed_shaded_irradiance = zip(
 
 _, ax = plt.subplots()
 ax.vlines(sim_inputs.incident_direct_irradiance,
-          ymin=min(leaf_layers.keys()), ymax=max(leaf_layers.keys()), label='incident sunlit', color='y')
+          ymin=min(leaf_layers.keys()), ymax=max(leaf_layers.keys()), label='incident direct', color='y')
 ax.vlines(sim_inputs.incident_diffuse_irradiance,
-          ymin=min(leaf_layers.keys()), ymax=max(leaf_layers.keys()), label='incident shaded', color='r')
+          ymin=min(leaf_layers.keys()), ymax=max(leaf_layers.keys()), label='incident diffuse', color='r')
 ax.plot(absorbed_sunlit_irradiance, layer_index, 'yo-', label='absorbed sunlit')
 ax.plot(absorbed_shaded_irradiance, layer_index, 'ro-', label='absorbed shaded')
 ax.set(xlabel='$\mathregular{irradiance\/[W \cdot m^{-2}_{ground}]}$',
