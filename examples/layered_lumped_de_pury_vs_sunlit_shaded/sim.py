@@ -41,9 +41,9 @@ def plot_absorbed_irradiance_profiles(incident_diffuse_irradiance, incident_dire
 def plot_linear_comparison(lumped_layer_irradiance, shaded_layer_irradiance, sunlit_layer_irradiance):
     _, ax = plt.subplots()
     ax.plot(lumped_layer_irradiance,
-            [sum(abs_par) for abs_par in zip(sunlit_layer_irradiance, shaded_layer_irradiance)])
-    ax.set(xlabel=r'$\mathregular{Lumped\/[W \cdot m^{-2}_{ground}]}$',
-           ylabel=r'$\mathregular{Sunlit-shaded\/[W \cdot m^{-2}_{ground}]}$')
+            [sum(abs_par) for abs_par in zip(sunlit_layer_irradiance, shaded_layer_irradiance)], 'o-')
+    ax.set(xlabel=r'$\mathregular{Lumped\/per\/layer\/[W \cdot m^{-2}_{ground}]}$',
+           ylabel=r'$\mathregular{Sum\/Sunlit-shaded\/per\/layer\/[W \cdot m^{-2}_{ground}]}$')
     ax.grid()
     plt.savefig('absorbed_irradiance_comparison.png')
     plt.close()
