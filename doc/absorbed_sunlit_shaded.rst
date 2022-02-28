@@ -92,7 +92,7 @@ distinct extinction coefficients inside the canopy.
 The extinction coefficient of the direct irradiance (:math:`k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]`) varies
 within the day as a function of the position of the sun (recall that the higher the sun is, the deeper sunflcks go
 inside the canopy). Assuming a spherical leaf angles distribution (cf. absorbed_sunlit_shaded_),
-:math:`k_{direct}` writes **(Cowan, 1968; Goudriaan, 1977)**:
+:math:`k_{direct}` writes **(Cowan, 1968; Goudriaan, 1977, Weiss et al., 2004)**:
 
 .. math::
     :label: direct_extinction_coefficient
