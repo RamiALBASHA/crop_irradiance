@@ -1,5 +1,7 @@
 from math import sin, sqrt, pi, exp, log
 
+from crop_irradiance.uniform_crops.formalisms.config import PRECISION
+
 
 def calc_leaf_scattering_coefficient(leaf_reflectance: float, leaf_transmittance: float) -> float:
     """Calculates leaf scattering coefficient.
@@ -42,7 +44,7 @@ def calc_direct_black_extinction_coefficient(solar_inclination: float,
             Agricultural Forest Meteorology 121, 37 - 53
 
     """
-    return clumping_factor * leaves_to_sun_average_projection / sin(max(1.e-6, solar_inclination))
+    return clumping_factor * leaves_to_sun_average_projection / sin(max(PRECISION, solar_inclination))
 
 
 def calc_direct_extinction_coefficient(solar_inclination: float,
@@ -129,7 +131,7 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
             The bare bones of leaf-angle distribution in radiation models for canopy photosynthesis and energy exchange.
             Agricultural and Forest Meteorology 43, 155 - 169.
     """
-    leaf_area_index = max(1.e-6, leaf_area_index)
+    leaf_area_index = max(PRECISION, leaf_area_index)
     sky_weights = calc_sky_sectors_weight(sky_sectors_number, sky_type)
 
     angle_increment = (pi / 2.0) / sky_sectors_number / 2.0  # half increment in sky ring declination angle
