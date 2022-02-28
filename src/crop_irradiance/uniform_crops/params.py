@@ -1,4 +1,4 @@
-from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves, config
 from crop_irradiance.uniform_crops.inputs import LumpedInputs, SunlitShadedInputs
 
 
@@ -16,9 +16,12 @@ class LumpedParams:
 
         elif self.model == 'de_pury':
             self.canopy_reflectance_to_diffuse_irradiance = kwargs['canopy_reflectance_to_diffuse_irradiance']
-            self.leaves_to_sun_average_projection = kwargs['leaves_to_sun_average_projection']
             self.sky_sectors_number = kwargs['sky_sectors_number']
             self.sky_type = kwargs['sky_type']
+            if 'leaf_angle_distribution_factor' in kwargs:
+                self.leaf_angle_distribution_factor = kwargs['leaf_angle_distribution_factor']
+            else:
+                self.leaf_angle_distribution_factor = config.SPHERICAL_ANGLES_FACTOR
 
             self.leaf_scattering_coefficient = sunlit_shaded_leaves.calc_leaf_scattering_coefficient(
                 leaf_reflectance=kwargs['leaf_reflectance'],
@@ -34,13 +37,13 @@ class LumpedParams:
         self.direct_black_extinction_coefficient = (
             sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
                 clumping_factor=self.clumping_factor))
 
         self.direct_extinction_coefficient = sunlit_shaded_leaves.calc_direct_extinction_coefficient(
             solar_inclination=inputs.solar_inclination,
             leaf_scattering_coefficient=self.leaf_scattering_coefficient,
-            leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+            leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
             clumping_factor=self.clumping_factor)
 
         self.diffuse_extinction_coefficient = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
@@ -59,12 +62,12 @@ class SunlitShadedParams:
     def __init__(self,
                  leaf_reflectance: float,
                  leaf_transmittance: float,
-                 leaves_to_sun_average_projection: float,
                  sky_sectors_number: int,
                  sky_type: str,
                  canopy_reflectance_to_diffuse_irradiance: float,
+                 leaf_angle_distribution_factor: float = config.SPHERICAL_ANGLES_FACTOR,
                  clumping_factor: float = 1):
-        self.leaves_to_sun_average_projection = leaves_to_sun_average_projection
+        self.leaf_angle_distribution_factor = leaf_angle_distribution_factor
         self.sky_sectors_number = sky_sectors_number
         self.sky_type = sky_type
         self.canopy_reflectance_to_diffuse_irradiance = canopy_reflectance_to_diffuse_irradiance
@@ -83,14 +86,14 @@ class SunlitShadedParams:
         self.direct_black_extinction_coefficient = \
             sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
                 clumping_factor=self.clumping_factor)
 
         self.direct_extinction_coefficient = \
             sunlit_shaded_leaves.calc_direct_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
                 leaf_scattering_coefficient=self.leaf_scattering_coefficient,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
                 clumping_factor=self.clumping_factor)
 
         self.diffuse_extinction_coefficient = \
