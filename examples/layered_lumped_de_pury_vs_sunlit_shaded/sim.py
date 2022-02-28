@@ -62,7 +62,8 @@ solar_inclination = [-16.22, -16.22, -16.22, -15.39, -9.49, -1.91, 6.65, 15.92, 
 
 if __name__ == '__main__':
     common_params = dict(leaf_reflectance=0.07, leaf_transmittance=0.0, leaves_to_sun_average_projection=0.5,
-                         sky_sectors_number=3, sky_type='soc', canopy_reflectance_to_diffuse_irradiance=0.057)
+                         sky_sectors_number=3, sky_type='soc', canopy_reflectance_to_diffuse_irradiance=0.057,
+                         clumping_factor=0.89)
 
     params_lumped = params.LumpedParams(model='de_pury', **common_params)
     params_sunlit_shaded = params.SunlitShadedParams(**common_params)

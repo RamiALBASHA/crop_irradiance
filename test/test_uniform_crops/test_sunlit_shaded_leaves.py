@@ -31,6 +31,12 @@ def test_calc_direct_black_extinction_coefficient_is_maximum_at_sunrise_and_suns
     assert extinction_coef_at_sunset > extinction_coef_at_midday
 
 
+def test_calc_direct_black_extinction_coefficient_decreases_with_clumping():
+    assert_values_trend(
+        values=[sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(0.0, 0.5, c) for c in range(1, 0)],
+        trend='decreasing')
+
+
 def test_calc_direct_extinction_coefficient_is_zero_when_leaf_scattering_is_unity():
     leaf_scattering_coefficient = 1.
     solar_inclination = pi / 3.

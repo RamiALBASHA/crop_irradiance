@@ -6,6 +6,10 @@ class LumpedParams:
     def __init__(self, model: str, **kwargs):
 
         self.model = model
+        if 'clumping_factor' in kwargs:
+            self.clumping_factor = kwargs['clumping_factor']
+        else:
+            self.clumping_factor = 1
 
         if self.model == 'beer':
             self.extinction_coefficient = kwargs['extinction_coefficient']
@@ -30,12 +34,14 @@ class LumpedParams:
         self.direct_black_extinction_coefficient = (
             sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection))
+                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                clumping_factor=self.clumping_factor))
 
         self.direct_extinction_coefficient = sunlit_shaded_leaves.calc_direct_extinction_coefficient(
             solar_inclination=inputs.solar_inclination,
             leaf_scattering_coefficient=self.leaf_scattering_coefficient,
-            leaves_to_sun_average_projection=self.leaves_to_sun_average_projection)
+            leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+            clumping_factor=self.clumping_factor)
 
         self.diffuse_extinction_coefficient = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
             leaf_area_index=sum(inputs.leaf_layers.values()),
@@ -56,11 +62,13 @@ class SunlitShadedParams:
                  leaves_to_sun_average_projection: float,
                  sky_sectors_number: int,
                  sky_type: str,
-                 canopy_reflectance_to_diffuse_irradiance: float):
+                 canopy_reflectance_to_diffuse_irradiance: float,
+                 clumping_factor: float = 1):
         self.leaves_to_sun_average_projection = leaves_to_sun_average_projection
         self.sky_sectors_number = sky_sectors_number
         self.sky_type = sky_type
         self.canopy_reflectance_to_diffuse_irradiance = canopy_reflectance_to_diffuse_irradiance
+        self.clumping_factor = clumping_factor
 
         self.direct_black_extinction_coefficient = None
         self.direct_extinction_coefficient = None
@@ -75,13 +83,15 @@ class SunlitShadedParams:
         self.direct_black_extinction_coefficient = \
             sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection)
+                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                clumping_factor=self.clumping_factor)
 
         self.direct_extinction_coefficient = \
             sunlit_shaded_leaves.calc_direct_extinction_coefficient(
                 solar_inclination=inputs.solar_inclination,
                 leaf_scattering_coefficient=self.leaf_scattering_coefficient,
-                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection)
+                leaves_to_sun_average_projection=self.leaves_to_sun_average_projection,
+                clumping_factor=self.clumping_factor)
 
         self.diffuse_extinction_coefficient = \
             sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(

@@ -92,7 +92,7 @@ distinct extinction coefficients inside the canopy.
 The extinction coefficient of the direct irradiance (:math:`k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]`) varies
 within the day as a function of the position of the sun (recall that the higher the sun is, the deeper sunflcks go
 inside the canopy). Assuming a spherical leaf angles distribution (cf. absorbed_sunlit_shaded_),
-:math:`k_{direct}` writes **(Cowan, 1968; Goudriaan, 1977)**:
+:math:`k_{direct}` writes **(Cowan, 1968; Goudriaan, 1977, Weiss et al., 2004)**:
 
 .. math::
     :label: direct_extinction_coefficient
@@ -104,10 +104,11 @@ with
 .. math::
     :label: direct_black_extinction_coefficient
 
-    k_{direct, \ black} = \frac{0.5}{\sin{\beta}}
+    k_{direct, \ black} = C \cdot \frac{0.5}{\sin{\beta}}
 
 
 where
+:math:`C \ [-]` is the clumping factor,
 :math:`k_{direct, \ black} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of black leaves and
 :math:`\sigma \ [-]` is the leaf scattering coefficient, equal to the sum of leaf reflectance and transmittance,
 all in the same irradiance band:
@@ -272,8 +273,8 @@ following equations, respectively:
             I_{inc, \ direct} \cdot
             \left[
                 \begin{array}
-                    (1 - \rho_{direct}) \cdot k_{direct} e ^ {(-k_{diffuse} \cdot L)} \\
-                    - (1 - \sigma) \cdot k_{direct, \ black} \cdot e ^ {(-k_{direct, \ black} \cdot L)}
+                    ((1 - \rho_{direct}) \cdot k_{direct} e ^ {-k_{diffuse} \cdot L} \\
+                    - (1 - \sigma) \cdot k_{direct, \ black} \cdot e ^ {-k_{direct, \ black} \cdot L}
                 \end{array}
             \right]
 

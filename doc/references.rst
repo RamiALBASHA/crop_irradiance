@@ -24,3 +24,7 @@ Kluwer Academic Publishers, Dordrecht, 238 pp.
 Goudriaan J., 2016.
 Light Distribution. In: Hikosaka K., Niinemets Ü., Anten N. (eds) Canopy Photosynthesis: From Basics to Applications.
 Advances in Photosynthesis and Respiration (Including Bioenergy and Related Processes), vol 42. Springer, Dordrecht
+
+Weiss M., Baret F., Smith G. J., Jonckheere I., Coppin P., 2004.
+Review of methods for in situ leaf area index (LAI) determination.
+Agricultural Forest Meteorology 121, 37 - 53.
