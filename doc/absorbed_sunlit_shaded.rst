@@ -272,8 +272,8 @@ following equations, respectively:
             I_{inc, \ direct} \cdot
             \left[
                 \begin{array}
-                    (1 - \rho_{direct}) \cdot k_{direct} e ^ {(-k_{diffuse} \cdot L)} \\
-                    - (1 - \sigma) \cdot k_{direct, \ black} \cdot e ^ {(-k_{direct, \ black} \cdot L)}
+                    ((1 - \rho_{direct}) \cdot k_{direct} e ^ {-k_{diffuse} \cdot L} \\
+                    - (1 - \sigma) \cdot k_{direct, \ black} \cdot e ^ {-k_{direct, \ black} \cdot L}
                 \end{array}
             \right]
 
