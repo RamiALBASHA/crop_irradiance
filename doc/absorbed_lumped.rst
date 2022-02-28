@@ -133,7 +133,7 @@ where
 :math:`\rho_{diffuse} \ [-]` is canopy reflectance to diffuse irradiance,
 :math:`k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of the direct irradiance, and
 :math:`k_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of the diffuse irradiance. These
-variables are thoroughly described in :doc:`_absorbed_sunlit_shaded`.
+variables are thoroughly described in :doc:`absorbed_sunlit_shaded`.
 
 
 Bigleaf canopies
