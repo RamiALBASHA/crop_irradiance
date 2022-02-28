@@ -104,10 +104,11 @@ with
 .. math::
     :label: direct_black_extinction_coefficient
 
-    k_{direct, \ black} = \frac{0.5}{\sin{\beta}}
+    k_{direct, \ black} = C \cdot \frac{0.5}{\sin{\beta}}
 
 
 where
+:math:`C \ [-]` is the clumping factor,
 :math:`k_{direct, \ black} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of black leaves and
 :math:`\sigma \ [-]` is the leaf scattering coefficient, equal to the sum of leaf reflectance and transmittance,
 all in the same irradiance band:
