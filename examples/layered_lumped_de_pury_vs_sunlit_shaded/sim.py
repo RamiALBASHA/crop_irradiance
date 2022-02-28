@@ -61,7 +61,8 @@ solar_inclination = [-16.22, -16.22, -16.22, -15.39, -9.49, -1.91, 6.65, 15.92, 
                      61.44, 58.69, 52.18, 43.6, 34.06, 24.22, 14.51, 5.33, -3.2, -10.56, -16.22]
 
 if __name__ == '__main__':
-    common_params = dict(leaf_reflectance=0.07, leaf_transmittance=0.0, leaves_to_sun_average_projection=0.5,
+    common_params = dict(leaf_reflectance=0.07, leaf_transmittance=0.0,
+                         leaf_angle_distribution_factor=0.9773843811168246,
                          sky_sectors_number=3, sky_type='soc', canopy_reflectance_to_diffuse_irradiance=0.057,
                          clumping_factor=0.89)
 

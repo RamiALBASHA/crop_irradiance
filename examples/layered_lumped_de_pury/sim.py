@@ -14,7 +14,8 @@ sim_inputs = inputs.LumpedInputs(model='de_pury',
 
 sim_params = params.LumpedParams(model='de_pury',
                                  leaf_reflectance=0.08, leaf_transmittance=0.07,
-                                 leaves_to_sun_average_projection=0.5, sky_sectors_number=3, sky_type='soc',
+                                 leaves_to_sun_average_projection=0.9773843811168246,
+                                 sky_sectors_number=3, sky_type='soc',
                                  canopy_reflectance_to_diffuse_irradiance=0.057)
 sim_params.update(sim_inputs)
 

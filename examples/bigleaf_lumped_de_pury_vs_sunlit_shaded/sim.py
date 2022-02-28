@@ -60,15 +60,17 @@ solar_inclination = [-16.22, -16.22, -16.22, -15.39, -9.49, -1.91, 6.65, 15.92, 
 
 if __name__ == '__main__':
 
-    params_lumped = params.LumpedParams(model='de_pury',
-                                        leaf_reflectance=0.07, leaf_transmittance=0.0,
-                                        leaves_to_sun_average_projection=0.5, sky_sectors_number=3,
-                                        sky_type='soc',
-                                        canopy_reflectance_to_diffuse_irradiance=0.057)
-    params_sunlit_shaded = params.SunlitShadedParams(leaf_reflectance=0.07, leaf_transmittance=0.0,
-                                                     leaves_to_sun_average_projection=0.5, sky_sectors_number=3,
-                                                     sky_type='soc',
-                                                     canopy_reflectance_to_diffuse_irradiance=0.057)
+    params_lumped = params.LumpedParams(
+        model='de_pury',
+        leaf_reflectance=0.07, leaf_transmittance=0.0,
+        leaves_to_sun_average_projection=0.9773843811168246,
+        sky_sectors_number=3, sky_type='soc',
+        canopy_reflectance_to_diffuse_irradiance=0.057)
+    params_sunlit_shaded = params.SunlitShadedParams(
+        leaf_reflectance=0.07, leaf_transmittance=0.0,
+        leaf_angle_distribution_factor=0.9773843811168246,
+        sky_sectors_number=3, sky_type='soc',
+        canopy_reflectance_to_diffuse_irradiance=0.057)
 
     abs_irradiance_lumped = []
     abs_irradiance_sunlit = []
