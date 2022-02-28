@@ -20,12 +20,15 @@ def calc_leaf_scattering_coefficient(leaf_reflectance: float, leaf_transmittance
 
 
 def calc_direct_black_extinction_coefficient(solar_inclination: float,
-                                             leaves_to_sun_average_projection: float = 0.5) -> float:
+                                             leaves_to_sun_average_projection: float = 0.5,
+                                             clumping_factor: float = 1.) -> float:
     """Calculates the extinction coefficient of direct (beam) irradiance through a canopy of black leaves.
 
     Args:
         solar_inclination: [rad] angle of solar inclination
         leaves_to_sun_average_projection: [-] average projection of canopy leaves in the direction of the solar beam
+        clumping_factor: [-] clumping factor to describe the spatial dependency of the positions of the leaves
+            (Weiss et al. 2004)
 
     Returns:
         [m2ground m-2leaf] the extinction coefficient of direct (beam) irradiance through a canopy of black leaves
@@ -34,18 +37,26 @@ def calc_direct_black_extinction_coefficient(solar_inclination: float,
         Goudriaan J. (1977).
             Crop Micrometeorology: A Simulation Study.
             Simulation monographs, Pudoc, Wageningen, 257 pp.
+        Weiss M., Baret F., Smith G. J., Jonckheere I., Coppin P., 2004.
+            Review of methods for in situ leaf area index (LAI) determination.
+            Agricultural Forest Meteorology 121, 37 - 53
+
     """
-    return leaves_to_sun_average_projection / sin(max(1.e-6, solar_inclination))
+    return clumping_factor * leaves_to_sun_average_projection / sin(max(1.e-6, solar_inclination))
 
 
-def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering_coefficient: float,
-                                       leaves_to_sun_average_projection: float = 0.5) -> float:
+def calc_direct_extinction_coefficient(solar_inclination: float,
+                                       leaf_scattering_coefficient: float,
+                                       leaves_to_sun_average_projection: float = 0.5,
+                                       clumping_factor: float = 1.) -> float:
     """Calculates the extinction coefficient of direct (beam) irradiance through a canopy.
 
     Args:
         solar_inclination: [rad] angle of solar inclination
         leaf_scattering_coefficient: [-] leaf scattering coefficient
         leaves_to_sun_average_projection: [-] average projection of canopy leaves in the direction of the solar beam
+        clumping_factor: [-] clumping factor to describe the spatial dependency of the positions of the leaves
+            (Weiss et al. 2004)
 
     Returns:
         [m2ground m-2leaf] the extinction coefficient of direct (beam) irradiance through the canopy
@@ -54,10 +65,16 @@ def calc_direct_extinction_coefficient(solar_inclination: float, leaf_scattering
         Goudriaan J. (1977).
             Crop Micrometeorology: A Simulation Study.
             Simulation monographs, Pudoc, Wageningen, 257 pp.
+        Weiss M., Baret F., Smith G. J., Jonckheere I., Coppin P., 2004.
+            Review of methods for in situ leaf area index (LAI) determination.
+            Agricultural Forest Meteorology 121, 37 - 53
+
     """
 
-    direct_black_extinction_coefficient = calc_direct_black_extinction_coefficient(solar_inclination,
-                                                                                   leaves_to_sun_average_projection)
+    direct_black_extinction_coefficient = calc_direct_black_extinction_coefficient(
+        solar_inclination=solar_inclination,
+        leaves_to_sun_average_projection=leaves_to_sun_average_projection,
+        clumping_factor=clumping_factor)
 
     return direct_black_extinction_coefficient * sqrt(1 - leaf_scattering_coefficient)
 
