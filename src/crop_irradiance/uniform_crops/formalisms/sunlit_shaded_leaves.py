@@ -1,6 +1,6 @@
 from math import sin, sqrt, pi, exp, log, tan
 
-from crop_irradiance.uniform_crops.formalisms.config import PRECISION
+from crop_irradiance.config import PRECISION
 
 
 def calc_leaf_scattering_coefficient(leaf_reflectance: float, leaf_transmittance: float) -> float:

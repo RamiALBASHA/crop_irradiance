@@ -1,4 +1,5 @@
-from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves, config
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
+from crop_irradiance import config
 from crop_irradiance.uniform_crops.inputs import LumpedInputs, SunlitShadedInputs
 
 
