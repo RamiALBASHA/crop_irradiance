@@ -33,8 +33,8 @@ likely to intercept irradiance. This interplay between the solar position and le
 extinction coefficient of the direct irradiance as we will see below
 (extinction_and_reflectance_coefficients_).
 
-Generally, it is assumed that leaf angles through the canopy follow a uniform distribution. **This means that if we took
-all leaves and organized them on a surface, this surface will be a hemisphere.** The consequence of this assumption is
+Generally, it is assumed that leaf angles through the canopy follow a uniform distribution. This means that if we took
+all leaves and organized them on a surface, this surface will be a hemisphere. The consequence of this assumption is
 that the surface of leaves that intercepts the incoming irradiance will remain the same independently from the incident
 angle (:numref:`leaf_angle_distribution`).
 
@@ -48,6 +48,10 @@ angle (:numref:`leaf_angle_distribution`).
     (after **Goudriaan and van Laar, 1994**). :math:`\beta \ [-]` is the angle of the solar elevation.
 
 
+
+Yet, it is more realistic to consider that leaves have a preferential declination angle (for instance, grapevine is said
+to have its leaves declined by 45° below the horizon). In this latter case leaves intercept different fractions of
+incident irradiance depending on the angle between the solar beam and leaves.
 
 Finally, before going into equations, recall that the absorbed irradiance per unit ground area is the product of the
 absorbed irradiance per unit leaf area and leaf area index (leaf area per unit ground area) for each leaf fraction
@@ -91,8 +95,7 @@ distinct extinction coefficients inside the canopy.
 
 The extinction coefficient of the direct irradiance (:math:`k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]`) varies
 within the day as a function of the position of the sun (recall that the higher the sun is, the deeper sunflcks go
-inside the canopy). Assuming a spherical leaf angles distribution (cf. absorbed_sunlit_shaded_),
-:math:`k_{direct}` writes **(Cowan, 1968; Goudriaan, 1977, Weiss et al., 2004)**:
+inside the canopy). It is given as **(Cowan, 1968; Goudriaan, 1977, Weiss et al., 2004, Campbell and Norman, 2012)**:
 
 .. math::
     :label: direct_extinction_coefficient
@@ -102,22 +105,45 @@ inside the canopy). Assuming a spherical leaf angles distribution (cf. absorbed_
 with
 
 .. math::
-    :label: direct_black_extinction_coefficient
-
-    k_{direct, \ black} = C \cdot \frac{0.5}{\sin{\beta}}
-
-
-where
-:math:`C \ [-]` is the clumping factor,
-:math:`k_{direct, \ black} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of black leaves and
-:math:`\sigma \ [-]` is the leaf scattering coefficient, equal to the sum of leaf reflectance and transmittance,
-all in the same irradiance band:
-
-.. math::
     :label: scattering_coefficient
 
     \sigma = \rho + \tau
 
+and
+
+.. math::
+    :label: direct_black_extinction_coefficient
+
+    k_{direct, \ black} = C \cdot \frac{\bar{o}(\beta)}{\sin{\beta}}
+
+
+where
+:math:`C \ [-]` is the clumping factor,
+:math:`\bar{o}(\beta)` is a projection function describing the surface of canopy elements that intercept the solar beam,
+:math:`k_{direct, \ black} \ [m^2_{ground} \cdot m^{-2}_{leaf}]` is the extinction coefficient of black leaves and
+:math:`\sigma \ [-]` is the leaf scattering coefficient, equal to the sum of leaf reflectance (:math:`\rho \ [-]`)
+and transmittance (:math:`\tau \ [-]`), all in the same irradiance band:
+
+The distribution function :math:`\bar{o}(\beta)` can be approximated by an ellipsoidal function following
+**Campbell (1986)** which yields:
+
+.. math::
+    :label: ellipsoidal distribution
+
+    k_{direct, \ black} = C \cdot \frac{\sqrt{\chi ^2 + \cot^2{\beta}}}{\chi + 1.774 \cdot \left(\chi + 1.182\right) ^{-0.733}}
+
+where
+:math:`\chi \ [-]` is the eccentricity of the ellipsoid, calculated as a function of the leaf characteristic angle
+:math:`\bar{\alpha}` following **Campbell (1990)** as:
+
+.. math::
+    :label: eccentricity_factor
+
+    \chi = \left(\frac{\bar{\alpha}}{9.65} \right) ^ {-0.6061} - 3
+
+
+It is noteworthy that when :math:`\alpha = 56 ^\circ` then :math:`\chi = 1` and the ellipsoidal distribution becomes a
+spherical distribution.
 
 The extinction coefficient of the sky-diffused irradiance (:math:`k_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]`)
 is independent from sun's position but varies with the total leaf area of the canopy.
