@@ -1,21 +1,7 @@
-from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
 from numpy import testing, pi, arange, random
 
-
-def assert_values_trend(values: list, trend: str) -> None or AssertionError:
-    """Asserts that a vector of values follows a given trend
-
-    Args:
-        values: values whose trend is to be checked
-        trend: one of ('increasing', 'decreasing', 'non-monotonic')
-    """
-    if trend == 'increasing':
-        assert all([x < y for x, y in zip(values, values[1:])])
-    elif trend == 'decreasing':
-        assert all([x > y for x, y in zip(values, values[1:])])
-    elif trend == 'non-monotonic':
-        assert (not all([x <= y for x, y in zip(values, values[1:])]) and
-                not all([x >= y for x, y in zip(values, values[1:])]))
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
+from test.utils import assert_values_trend
 
 
 def test_calc_leaf_scattering_coefficient_returns_expected_values():
