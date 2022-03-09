@@ -23,9 +23,9 @@ def test_calc_leaf_scattering_coefficient_returns_expected_values():
 
 
 def test_calc_direct_black_extinction_coefficient_is_maximum_at_sunrise_and_sunset():
-    extinction_coef_at_sunrise = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(0.0, 0.5)
-    extinction_coef_at_midday = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(pi / 2.0, 0.5)
-    extinction_coef_at_sunset = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(pi, 0.5)
+    extinction_coef_at_sunrise = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(0.0, 0.9774, 1)
+    extinction_coef_at_midday = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(pi / 2.0, 0.9774, 1)
+    extinction_coef_at_sunset = sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(pi, 0.9774, 1)
 
     assert extinction_coef_at_sunrise > extinction_coef_at_midday
     assert extinction_coef_at_sunset > extinction_coef_at_midday
@@ -33,23 +33,29 @@ def test_calc_direct_black_extinction_coefficient_is_maximum_at_sunrise_and_suns
 
 def test_calc_direct_black_extinction_coefficient_decreases_with_clumping():
     assert_values_trend(
-        values=[sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(0.0, 0.5, c) for c in range(1, 0)],
+        values=[sunlit_shaded_leaves.calc_direct_black_extinction_coefficient(0.0, 0.9774, c) for c in range(1, 0)],
         trend='decreasing')
 
 
 def test_calc_direct_extinction_coefficient_is_zero_when_leaf_scattering_is_unity():
     leaf_scattering_coefficient = 1.
     solar_inclination = pi / 3.
+    leaf_angle_distribution_factor = 0.9773843811168246
+    clumping_factor = 1.
 
-    assert sunlit_shaded_leaves.calc_direct_extinction_coefficient(solar_inclination, leaf_scattering_coefficient) == 0.
+    assert sunlit_shaded_leaves.calc_direct_extinction_coefficient(
+        solar_inclination, leaf_scattering_coefficient, leaf_angle_distribution_factor, clumping_factor) == 0.
 
 
 def test_calc_direct_extinction_coefficient_returns_expected_value():
     leaf_scattering_coefficient = 0.15
     solar_inclination = pi / 2.
-    expected_value = 0.4609772228646444
-    actual_value = sunlit_shaded_leaves.calc_direct_extinction_coefficient(solar_inclination,
-                                                                           leaf_scattering_coefficient)
+    expected_value = 0.46260740831950214
+    leaf_angle_distribution_factor = 0.9773843811168246
+    clumping_factor = 1.
+
+    actual_value = sunlit_shaded_leaves.calc_direct_extinction_coefficient(
+        solar_inclination, leaf_scattering_coefficient, leaf_angle_distribution_factor, clumping_factor)
 
     testing.assert_almost_equal(actual_value, expected_value, decimal=6)
 
