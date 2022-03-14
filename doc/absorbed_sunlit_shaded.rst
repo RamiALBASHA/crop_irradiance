@@ -160,7 +160,7 @@ rings. The extinction coefficient :math:`k_{diffuse}` is given as:
             \Sigma_i^n {
             \left(
             c_i \cdot
-            e ^ {- \frac{0.5}{\sin \beta_{sky, \ i}} \cdot \sqrt{1 - \sigma} \cdot L_t}
+            e ^ {- k_{direct}(\beta_{sky, \ i}) \cdot L_t}
             \right)
             }
         \right)
@@ -187,11 +187,11 @@ the last equation becomes:
     - \frac{1}{L_t} \cdot \ln
         \left(
             \begin{array}{1}
-                0.178 \cdot e^ {-\frac{0.5}{\sin (\frac{\pi}{12})} \cdot \sqrt{1 - \sigma} \cdot L_t}
+                0.178 \cdot e^ {- k_{direct}(\frac{\pi}{12}) \cdot L_t}
                 \\
-                + 0.514 \cdot e^ {-\frac{0.5}{\sin (\frac{3\pi}{12})} \cdot \sqrt{1 - \sigma} \cdot L_t}
+                + 0.514 \cdot e^ {- k_{direct}(\frac{3\pi}{12}) \cdot L_t}
                 \\
-                + 0.308 \cdot e^ {-\frac{0.5}{\sin (\frac{5\pi}{12})} \cdot \sqrt{1 - \sigma} \cdot L_t}
+                + 0.308 \cdot e^ {- k_{direct}(\frac{5\pi}{12}) \cdot L_t}
             \end{array}
         \right)
 
