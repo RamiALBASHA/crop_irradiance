@@ -117,6 +117,8 @@ def calc_sky_sectors_weight(sky_sectors_number: int, sky_type: str) -> list:
 
 
 def calc_diffuse_extinction_coefficient(leaf_area_index: float,
+                                        leaf_angle_distribution_factor: float,
+                                        clumping_factor: float,
                                         leaf_scattering_coefficient: float,
                                         sky_sectors_number: int = 3,
                                         sky_type: str = 'soc') -> (float, float):
@@ -124,6 +126,10 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
 
     Args:
         leaf_area_index: [m2leaf m-2ground] leaf area index of the whole canopy
+        leaf_angle_distribution_factor: [-] factor describing leaf angle distribution (for spherical distributions its
+            value equals rad(56) = 0.9773843811168246)
+        clumping_factor: [-] clumping factor to describe the spatial dependency of the positions of the leaves
+            (Weiss et al. 2004)
         leaf_scattering_coefficient: [-] leaf scattering coefficient
         sky_sectors_number: [-] number of sky sectors to be used
         sky_type: one of 'soc' or 'uoc' (Sky OverCast and Uniform OverCast, respectively)
@@ -147,8 +153,12 @@ def calc_diffuse_extinction_coefficient(leaf_area_index: float,
 
     for i in range(sky_sectors_number):
         sector_angle = angle_increment * (1.0 + 2.0 * i)
-        diffuse_extinction_coefficient += sky_weights[i] * exp(
-            -(0.5 / sin(sector_angle)) * sqrt(1.0 - leaf_scattering_coefficient) * leaf_area_index)
+        direct_extinction_coefficient = calc_direct_extinction_coefficient(
+            solar_inclination=sector_angle,
+            leaf_scattering_coefficient=leaf_scattering_coefficient,
+            leaf_angle_distribution_factor=leaf_angle_distribution_factor,
+            clumping_factor=clumping_factor)
+        diffuse_extinction_coefficient += sky_weights[i] * exp(-direct_extinction_coefficient * leaf_area_index)
 
         diffuse_black_extinction_coefficient += sky_weights[i] * exp(-(0.5 / sin(sector_angle)) * leaf_area_index)
 

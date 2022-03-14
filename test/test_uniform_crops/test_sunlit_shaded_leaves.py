@@ -1,5 +1,6 @@
-from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
 from numpy import testing, pi, arange, random
+
+from crop_irradiance.uniform_crops.formalisms import sunlit_shaded_leaves
 
 
 def assert_values_trend(values: list, trend: str) -> None or AssertionError:
@@ -85,8 +86,15 @@ def test_calc_sky_sectors_weight_returns_weights_which_sums_up_to_1():
 
 def test_calc_diffuse_extinction_coefficient_reduces_as_leaf_area_index_increases():
     leaf_scattering_coefficient = 0.15
+    leaf_angle_distribution_factor = 0.9773843811168246
+    clumping_factor = 1
+
     diffuse_coeffcients = [
-        sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(leaf_area_index, leaf_scattering_coefficient) for
+        sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
+            leaf_area_index=leaf_area_index,
+            leaf_scattering_coefficient=leaf_scattering_coefficient,
+            leaf_angle_distribution_factor=leaf_angle_distribution_factor,
+            clumping_factor=clumping_factor) for
         leaf_area_index in arange(0, 5.1, 0.1)]
 
     assert_values_trend(values=diffuse_coeffcients, trend='decreasing')
@@ -96,9 +104,17 @@ def test_calc_diffuse_extinction_coefficient_returns_greater_extinction_coeffici
     leaf_area_index = 3.0
     leaf_scattering_coefficient = 0.15
     sky_sectors_number = 3
+    leaf_angle_distribution_factor = 0.9773843811168246
+    clumping_factor = 1
+
     for sky_type in ('soc', 'uoc'):
         extinction_coef, black_extinction_coef = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
-            leaf_area_index, leaf_scattering_coefficient, sky_sectors_number, sky_type)
+            leaf_area_index=leaf_area_index,
+            leaf_angle_distribution_factor=leaf_angle_distribution_factor,
+            clumping_factor=clumping_factor,
+            leaf_scattering_coefficient=leaf_scattering_coefficient,
+            sky_sectors_number=sky_sectors_number,
+            sky_type=sky_type)
 
     assert extinction_coef < black_extinction_coef
 
@@ -107,14 +123,22 @@ def test_calc_diffuse_extinction_coefficient_returns_expected_values():
     leaf_area_index = 3.0
     leaf_scattering_coefficient = 0.15
     sky_sectors_number = 3
+    leaf_angle_distribution_factor = 0.9773843811168246
+    clumping_factor = 1
+
     expected_values = {'soc': (0.6390947959070368, 0.6872841045179627),
                        'uoc': (0.675874154734713, 0.7250108165502616)}
 
     for sky_type in ('soc', 'uoc'):
         actual_values = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
-            leaf_area_index, leaf_scattering_coefficient, sky_sectors_number, sky_type)
+            leaf_area_index=leaf_area_index,
+            leaf_angle_distribution_factor=leaf_angle_distribution_factor,
+            clumping_factor=clumping_factor,
+            leaf_scattering_coefficient=leaf_scattering_coefficient,
+            sky_sectors_number=sky_sectors_number,
+            sky_type=sky_type)
 
-    testing.assert_almost_equal(actual_values, expected_values[sky_type], decimal=6)
+    testing.assert_almost_equal(actual_values, expected_values[sky_type], decimal=3)
 
 
 def test_calc_canopy_reflectance_to_direct_irradiance_is_zero_when_leaf_scattering_is_zero():
