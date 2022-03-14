@@ -48,6 +48,8 @@ class LumpedParams:
 
         self.diffuse_extinction_coefficient = sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
             leaf_area_index=sum(inputs.leaf_layers.values()),
+            leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
+            clumping_factor=self.clumping_factor,
             leaf_scattering_coefficient=self.leaf_scattering_coefficient,
             sky_sectors_number=self.sky_sectors_number,
             sky_type=self.sky_type)[0]
@@ -99,6 +101,8 @@ class SunlitShadedParams:
         self.diffuse_extinction_coefficient = \
             sunlit_shaded_leaves.calc_diffuse_extinction_coefficient(
                 leaf_area_index=sum(inputs.leaf_layers.values()),
+                leaf_angle_distribution_factor=self.leaf_angle_distribution_factor,
+                clumping_factor=self.clumping_factor,
                 leaf_scattering_coefficient=self.leaf_scattering_coefficient,
                 sky_sectors_number=self.sky_sectors_number,
                 sky_type=self.sky_type)[0]
