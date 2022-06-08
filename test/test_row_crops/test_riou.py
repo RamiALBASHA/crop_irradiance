@@ -52,24 +52,11 @@ def test_calc_absorbed_irradiance_decreases_as_porosity_increases(common_inputs)
 
 
 def test_calc_absorbed_irradiance_increases_as_solar_beam_approaches_the_normal_to_the_row_axis(common_inputs):
-    common_inputs.update({'normal_angle_row': radians(90)})
     abs_irradiance = []
     for a in range(0, 91):
         common_inputs.update({'solar_azimuth': radians(a)})
         abs_irradiance.append(calc_riou89(**common_inputs))
     assert_values_trend(values=abs_irradiance, trend='+')
-
-
-def test_calc_absorbed_irradiance_slightly_decreases_at_solar_noon_for_north_south_rows(common_inputs):
-    common_inputs.update({'normal_angle_row': radians(90), 'solar_azimuth': radians(90)})
-
-    abs_irradiance = []
-    for a in range(0, 91, 5):
-        common_inputs.update({'solar_inclination': radians(a)})
-        abs_irradiance.append(calc_riou89(**common_inputs))
-    assert abs_irradiance[7] > abs_irradiance[-1]
-    assert_values_trend(values=abs_irradiance[:7], trend='+')
-    assert_values_trend(values=abs_irradiance[7:], trend='-')
 
 
 def test_calc_absorbed_irradiance_is_maximum_at_solar_noon_for_east_west_rows(common_inputs):
@@ -79,7 +66,5 @@ def test_calc_absorbed_irradiance_is_maximum_at_solar_noon_for_east_west_rows(co
     for a in range(0, 180, 5):
         common_inputs.update({'solar_inclination': radians(a)})
         abs_irradiance.append(calc_riou89(**common_inputs))
-    assert abs_irradiance[18] > abs_irradiance[0]
-    assert abs_irradiance[18] > abs_irradiance[-1]
     assert_values_trend(values=abs_irradiance[:18], trend='+')
     assert_values_trend(values=abs_irradiance[18:], trend='-')
