@@ -32,4 +32,6 @@ where = ["src"]
 tests = [
     "mock",
     "nose",
+    "numpy",
+    "pytest",
 ]
