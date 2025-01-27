@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crop_irradiance"
+dynamic = ["version"]
+authors = [
+    { name = "Rami ALBASHA", email = "rami.albacha@yahoo.com" },
+]
+description = "A library for simulating irradiance absorption by crops canopies"
+readme = "README.md"
+license = { text = "CeCILL-C Free Software License Agreement (CECILL-C)" }
+requires-python = ">=3.6"
+keywords = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: CeCILL-C Free Software License Agreement (CECILL-C)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/RamiALBASHA/crop_irradiance"
+
+[tool.setuptools.dynamic]
+version = { attr = "crop_irradiance.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+tests = [
+    "mock",
+    "nose",
+    "numpy",
+    "pytest",
+]
