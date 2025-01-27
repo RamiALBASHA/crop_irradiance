@@ -160,13 +160,6 @@ class Shoot(dict):
 
         self.set_leaf_layers(leaves_category)
 
-    def __getitem__(self, key):
-        val = dict.__getitem__(self, key)
-        return val
-
-    def __setitem__(self, key, val):
-        dict.__setitem__(self, key, val)
-
     def set_leaf_layers(self, leaves_category: str):
         """Sets leaf layers of the shoot.
 
