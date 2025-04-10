@@ -24,7 +24,7 @@ class LumpedLeafLayer(LeafLayer):
                  index: int,
                  upper_cumulative_leaf_area_index: float,
                  thickness: float):
-        LeafLayer.__init__(self, index, upper_cumulative_leaf_area_index, thickness)
+        super().__init__(index, upper_cumulative_leaf_area_index, thickness)
 
     def calc_absorbed_irradiance(self,
                                  inputs: LumpedInputs,
@@ -53,7 +53,7 @@ class SunlitShadedLeafLayer(LeafLayer):
                  upper_cumulative_leaf_area_index: float,
                  thickness: float,
                  params: SunlitShadedParams):
-        LeafLayer.__init__(self, index, upper_cumulative_leaf_area_index, thickness)
+        super().__init__(index, upper_cumulative_leaf_area_index, thickness)
 
         self.sunlit_fraction = sunlit_shaded_leaves.calc_sunlit_fraction_per_leaf_layer(
             upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
@@ -152,20 +152,13 @@ class Shoot(dict):
                 definitely lead to erroneous calculations.
         """
 
-        dict.__init__(self)
+        super().__init__()
 
         self.inputs = inputs
         self.params = params
         self._leaf_layer_indexes = list(reversed(sorted(inputs.leaf_layers.keys())))
 
         self.set_leaf_layers(leaves_category)
-
-    def __getitem__(self, key):
-        val = dict.__getitem__(self, key)
-        return val
-
-    def __setitem__(self, key, val):
-        dict.__setitem__(self, key, val)
 
     def set_leaf_layers(self, leaves_category: str):
         """Sets leaf layers of the shoot.
