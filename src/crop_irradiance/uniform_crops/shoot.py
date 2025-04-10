@@ -4,39 +4,38 @@ from crop_irradiance.uniform_crops.params import LumpedParams, SunlitShadedParam
 
 
 class LeafLayer:
-    def __init__(self,
-                 index: int,
-                 upper_cumulative_leaf_area_index: float,
-                 thickness: float):
+    def __init__(
+        self, index: int, upper_cumulative_leaf_area_index: float, thickness: float
+    ):
         self.index = index
         self.upper_cumulative_leaf_area_index = upper_cumulative_leaf_area_index
         self.thickness = thickness
         self.absorbed_irradiance = {}
 
-    def calc_absorbed_irradiance(self,
-                                 inputs: LumpedInputs or SunlitShadedInputs,
-                                 params: LumpedParams or SunlitShadedParams):
+    def calc_absorbed_irradiance(
+        self,
+        inputs: LumpedInputs or SunlitShadedInputs,
+        params: LumpedParams or SunlitShadedParams,
+    ):
         pass
 
 
 class LumpedLeafLayer(LeafLayer):
-    def __init__(self,
-                 index: int,
-                 upper_cumulative_leaf_area_index: float,
-                 thickness: float):
+    def __init__(
+        self, index: int, upper_cumulative_leaf_area_index: float, thickness: float
+    ):
         super().__init__(index, upper_cumulative_leaf_area_index, thickness)
 
-    def calc_absorbed_irradiance(self,
-                                 inputs: LumpedInputs,
-                                 params: LumpedParams):
-        if params.model == 'beer':
-            self.absorbed_irradiance['lumped'] = lumped_leaves.calc_beer_absorption(
+    def calc_absorbed_irradiance(self, inputs: LumpedInputs, params: LumpedParams):
+        if params.model == "beer":
+            self.absorbed_irradiance["lumped"] = lumped_leaves.calc_beer_absorption(
                 incident_irradiance=inputs.incident_irradiance,
                 extinction_coefficient=params.extinction_coefficient,
                 upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness)
-        elif params.model == 'de_pury':
-            self.absorbed_irradiance['lumped'] = lumped_leaves.calc_de_pury_absorption(
+                leaf_layer_thickness=self.thickness,
+            )
+        elif params.model == "de_pury":
+            self.absorbed_irradiance["lumped"] = lumped_leaves.calc_de_pury_absorption(
                 incident_direct_irradiance=inputs.incident_direct_irradiance,
                 incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
                 upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
@@ -44,21 +43,25 @@ class LumpedLeafLayer(LeafLayer):
                 direct_extinction_coefficient=params.direct_extinction_coefficient,
                 diffuse_extinction_coefficient=params.diffuse_extinction_coefficient,
                 canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
-                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance)
+                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+            )
 
 
 class SunlitShadedLeafLayer(LeafLayer):
-    def __init__(self,
-                 index: int,
-                 upper_cumulative_leaf_area_index: float,
-                 thickness: float,
-                 params: SunlitShadedParams):
+    def __init__(
+        self,
+        index: int,
+        upper_cumulative_leaf_area_index: float,
+        thickness: float,
+        params: SunlitShadedParams,
+    ):
         super().__init__(index, upper_cumulative_leaf_area_index, thickness)
 
         self.sunlit_fraction = sunlit_shaded_leaves.calc_sunlit_fraction_per_leaf_layer(
             upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
             leaf_layer_thickness=self.thickness,
-            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient)
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+        )
 
         self.shaded_fraction = 1.0 - self.sunlit_fraction
 
@@ -68,74 +71,76 @@ class SunlitShadedLeafLayer(LeafLayer):
         self.abs_diffuse_by_shaded = None
         self.abs_scattered_by_shaded = None
 
-    def calc_absorbed_irradiance(self,
-                                 inputs: SunlitShadedInputs,
-                                 params: SunlitShadedParams):
-        self.absorbed_irradiance = (
-            sunlit_shaded_leaves.absorbed_irradiance_by_sunlit_and_shaded_leaves_per_leaf_layer(
-                incident_direct_irradiance=inputs.incident_direct_irradiance,
-                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                leaf_scattering_coefficient=params.leaf_scattering_coefficient,
-                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
-                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
-                direct_extinction_coefficient=params.direct_extinction_coefficient,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+    def calc_absorbed_irradiance(
+        self, inputs: SunlitShadedInputs, params: SunlitShadedParams
+    ):
+        self.absorbed_irradiance = sunlit_shaded_leaves.absorbed_irradiance_by_sunlit_and_shaded_leaves_per_leaf_layer(
+            incident_direct_irradiance=inputs.incident_direct_irradiance,
+            incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            leaf_scattering_coefficient=params.leaf_scattering_coefficient,
+            canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+            canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+            direct_extinction_coefficient=params.direct_extinction_coefficient,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient=params.diffuse_extinction_coefficient,
+        )
 
-        self.abs_direct_by_sunlit = (
-            sunlit_shaded_leaves.calc_absorbed_direct_irradiance_by_sunlit_leaf_layer(
-                incident_direct_irradiance=inputs.incident_direct_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                leaf_scattering_coefficient=params.leaf_scattering_coefficient,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient))
+        self.abs_direct_by_sunlit = sunlit_shaded_leaves.calc_absorbed_direct_irradiance_by_sunlit_leaf_layer(
+            incident_direct_irradiance=inputs.incident_direct_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            leaf_scattering_coefficient=params.leaf_scattering_coefficient,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+        )
 
-        self.abs_diffuse_by_sunlit = (
-            sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_sunlit_leaf_layer(
-                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+        self.abs_diffuse_by_sunlit = sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_sunlit_leaf_layer(
+            incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient=params.diffuse_extinction_coefficient,
+        )
 
-        self.abs_scattered_by_sunlit = (
-            sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_sunlit_leaf_layer(
-                incident_direct_irradiance=inputs.incident_direct_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                direct_extinction_coefficient=params.direct_extinction_coefficient,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
-                leaf_scattering_coefficient=params.leaf_scattering_coefficient))
+        self.abs_scattered_by_sunlit = sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_sunlit_leaf_layer(
+            incident_direct_irradiance=inputs.incident_direct_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            direct_extinction_coefficient=params.direct_extinction_coefficient,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+            canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+            leaf_scattering_coefficient=params.leaf_scattering_coefficient,
+        )
 
-        self.abs_diffuse_by_shaded = (
-            sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_shaded_leaf_layer(
-                incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                diffuse_extinction_coefficient=params.diffuse_extinction_coefficient))
+        self.abs_diffuse_by_shaded = sunlit_shaded_leaves.calc_absorbed_diffuse_irradiance_by_shaded_leaf_layer(
+            incident_diffuse_irradiance=inputs.incident_diffuse_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            canopy_reflectance_to_diffuse_irradiance=params.canopy_reflectance_to_diffuse_irradiance,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+            diffuse_extinction_coefficient=params.diffuse_extinction_coefficient,
+        )
 
-        self.abs_scattered_by_shaded = (
-            sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_shaded_leaf_layer(
-                incident_direct_irradiance=inputs.incident_direct_irradiance,
-                upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
-                leaf_layer_thickness=self.thickness,
-                direct_extinction_coefficient=params.direct_extinction_coefficient,
-                direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
-                canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
-                leaf_scattering_coefficient=params.leaf_scattering_coefficient))
+        self.abs_scattered_by_shaded = sunlit_shaded_leaves.calc_absorbed_scattered_irradiance_by_shaded_leaf_layer(
+            incident_direct_irradiance=inputs.incident_direct_irradiance,
+            upper_cumulative_leaf_area_index=self.upper_cumulative_leaf_area_index,
+            leaf_layer_thickness=self.thickness,
+            direct_extinction_coefficient=params.direct_extinction_coefficient,
+            direct_black_extinction_coefficient=params.direct_black_extinction_coefficient,
+            canopy_reflectance_to_direct_irradiance=params.canopy_reflectance_to_direct_irradiance,
+            leaf_scattering_coefficient=params.leaf_scattering_coefficient,
+        )
 
 
 class Shoot(dict):
-    def __init__(self,
-                 leaves_category: str,
-                 inputs: LumpedInputs or SunlitShadedInputs,
-                 params: LumpedParams or SunlitShadedParams):
+    def __init__(
+        self,
+        leaves_category: str,
+        inputs: LumpedInputs or SunlitShadedInputs,
+        params: LumpedParams or SunlitShadedParams,
+    ):
         """Creates a class:`Shoot` object having either 'lumped' leaves or 'sunlit-shaded' leaves.
 
         Args:
@@ -170,20 +175,21 @@ class Shoot(dict):
         upper_cumulative_leaf_area_index = 0.0
         for index in self._leaf_layer_indexes:
             layer_thickness = self.inputs.leaf_layers[index]
-            if leaves_category == 'lumped':
-                self[index] = LumpedLeafLayer(index,
-                                              upper_cumulative_leaf_area_index,
-                                              layer_thickness)
+            if leaves_category == "lumped":
+                self[index] = LumpedLeafLayer(
+                    index, upper_cumulative_leaf_area_index, layer_thickness
+                )
             else:
-                self[index] = SunlitShadedLeafLayer(index,
-                                                    upper_cumulative_leaf_area_index,
-                                                    layer_thickness,
-                                                    self.params)
+                self[index] = SunlitShadedLeafLayer(
+                    index,
+                    upper_cumulative_leaf_area_index,
+                    layer_thickness,
+                    self.params,
+                )
 
             upper_cumulative_leaf_area_index += layer_thickness
 
     def calc_absorbed_irradiance(self):
-        """Calculates the absorbed irradiance by shoot's layers.
-        """
+        """Calculates the absorbed irradiance by shoot's layers."""
         for index in self._leaf_layer_indexes:
             self[index].calc_absorbed_irradiance(self.inputs, self.params)
