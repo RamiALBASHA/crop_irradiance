@@ -1,10 +1,12 @@
 from math import exp
 
 
-def calc_beer_absorption(incident_irradiance: float,
-                         extinction_coefficient: float,
-                         upper_cumulative_leaf_area_index: float,
-                         leaf_layer_thickness: float) -> float:
+def calc_beer_absorption(
+    incident_irradiance: float,
+    extinction_coefficient: float,
+    upper_cumulative_leaf_area_index: float,
+    leaf_layer_thickness: float,
+) -> float:
     """Calculates irradiance absorption by a uniform leaf layer following Beer-Lambert's law.
 
     Args:
@@ -22,21 +24,26 @@ def calc_beer_absorption(incident_irradiance: float,
             which case the absorbed irradiance will have the same unit (e.g. J cm-2ground)
 
     """
-    scaling_factor = (
-            exp(-extinction_coefficient * upper_cumulative_leaf_area_index) -
-            exp(-extinction_coefficient * (upper_cumulative_leaf_area_index + leaf_layer_thickness)))
+    scaling_factor = exp(
+        -extinction_coefficient * upper_cumulative_leaf_area_index
+    ) - exp(
+        -extinction_coefficient
+        * (upper_cumulative_leaf_area_index + leaf_layer_thickness)
+    )
 
     return incident_irradiance * scaling_factor
 
 
-def calc_de_pury_absorption(incident_direct_irradiance: float,
-                            incident_diffuse_irradiance: float,
-                            upper_cumulative_leaf_area_index: float,
-                            leaf_layer_thickness: float,
-                            direct_extinction_coefficient: float,
-                            diffuse_extinction_coefficient: float,
-                            canopy_reflectance_to_direct_irradiance: float,
-                            canopy_reflectance_to_diffuse_irradiance: float) -> float:
+def calc_de_pury_absorption(
+    incident_direct_irradiance: float,
+    incident_diffuse_irradiance: float,
+    upper_cumulative_leaf_area_index: float,
+    leaf_layer_thickness: float,
+    direct_extinction_coefficient: float,
+    diffuse_extinction_coefficient: float,
+    canopy_reflectance_to_direct_irradiance: float,
+    canopy_reflectance_to_diffuse_irradiance: float,
+) -> float:
     """Calculates the absorbed direct and diffuse irradiance by a leaf layer per unit ground area.
 
     Args:
@@ -55,26 +62,32 @@ def calc_de_pury_absorption(incident_direct_irradiance: float,
         [W m-2ground]: the absorbed direct and diffuse irradiance by a leaf layer per unit ground area
 
     """
-    absorbed_direct_irradiance = calc_absorbed_direct_irradiance(incident_direct_irradiance,
-                                                                 upper_cumulative_leaf_area_index,
-                                                                 leaf_layer_thickness,
-                                                                 direct_extinction_coefficient,
-                                                                 canopy_reflectance_to_direct_irradiance)
+    absorbed_direct_irradiance = calc_absorbed_direct_irradiance(
+        incident_direct_irradiance,
+        upper_cumulative_leaf_area_index,
+        leaf_layer_thickness,
+        direct_extinction_coefficient,
+        canopy_reflectance_to_direct_irradiance,
+    )
 
-    absorbed_diffuse_irradiance = calc_absorbed_diffuse_irradiance(incident_diffuse_irradiance,
-                                                                   upper_cumulative_leaf_area_index,
-                                                                   leaf_layer_thickness,
-                                                                   diffuse_extinction_coefficient,
-                                                                   canopy_reflectance_to_diffuse_irradiance)
+    absorbed_diffuse_irradiance = calc_absorbed_diffuse_irradiance(
+        incident_diffuse_irradiance,
+        upper_cumulative_leaf_area_index,
+        leaf_layer_thickness,
+        diffuse_extinction_coefficient,
+        canopy_reflectance_to_diffuse_irradiance,
+    )
 
     return absorbed_direct_irradiance + absorbed_diffuse_irradiance
 
 
-def calc_absorbed_direct_irradiance(incident_direct_irradiance: float,
-                                    upper_cumulative_leaf_area_index: float,
-                                    leaf_layer_thickness: float,
-                                    direct_extinction_coefficient: float,
-                                    canopy_reflectance_to_direct_irradiance: float) -> float:
+def calc_absorbed_direct_irradiance(
+    incident_direct_irradiance: float,
+    upper_cumulative_leaf_area_index: float,
+    leaf_layer_thickness: float,
+    direct_extinction_coefficient: float,
+    canopy_reflectance_to_direct_irradiance: float,
+) -> float:
     """Calculates the absorbed direct irradiance by a leaf layer per unit ground area.
 
     Args:
@@ -89,18 +102,27 @@ def calc_absorbed_direct_irradiance(incident_direct_irradiance: float,
         [W m-2ground] the absorbed direct irradiance by a leaf layer per unit ground area
     """
 
-    scaling_factor = (
-            exp(-direct_extinction_coefficient * upper_cumulative_leaf_area_index) -
-            exp(-direct_extinction_coefficient * (upper_cumulative_leaf_area_index + leaf_layer_thickness)))
+    scaling_factor = exp(
+        -direct_extinction_coefficient * upper_cumulative_leaf_area_index
+    ) - exp(
+        -direct_extinction_coefficient
+        * (upper_cumulative_leaf_area_index + leaf_layer_thickness)
+    )
 
-    return incident_direct_irradiance * (1 - canopy_reflectance_to_direct_irradiance) * scaling_factor
+    return (
+        incident_direct_irradiance
+        * (1 - canopy_reflectance_to_direct_irradiance)
+        * scaling_factor
+    )
 
 
-def calc_absorbed_diffuse_irradiance(incident_diffuse_irradiance: float,
-                                     upper_cumulative_leaf_area_index: float,
-                                     leaf_layer_thickness: float,
-                                     diffuse_extinction_coefficient: float,
-                                     canopy_reflectance_to_diffuse_irradiance: float) -> float:
+def calc_absorbed_diffuse_irradiance(
+    incident_diffuse_irradiance: float,
+    upper_cumulative_leaf_area_index: float,
+    leaf_layer_thickness: float,
+    diffuse_extinction_coefficient: float,
+    canopy_reflectance_to_diffuse_irradiance: float,
+) -> float:
     """Calculates the absorbed diffuse irradiance by a leaf layer per unit ground area.
 
     Args:
@@ -116,8 +138,15 @@ def calc_absorbed_diffuse_irradiance(incident_diffuse_irradiance: float,
         [W m-2ground] the absorbed diffuse irradiance by a leaf layer per unit ground area
 
     """
-    scaling_factor = (
-            exp(-diffuse_extinction_coefficient * upper_cumulative_leaf_area_index) -
-            exp(-diffuse_extinction_coefficient * (upper_cumulative_leaf_area_index + leaf_layer_thickness)))
+    scaling_factor = exp(
+        -diffuse_extinction_coefficient * upper_cumulative_leaf_area_index
+    ) - exp(
+        -diffuse_extinction_coefficient
+        * (upper_cumulative_leaf_area_index + leaf_layer_thickness)
+    )
 
-    return incident_diffuse_irradiance * (1 - canopy_reflectance_to_diffuse_irradiance) * scaling_factor
+    return (
+        incident_diffuse_irradiance
+        * (1 - canopy_reflectance_to_diffuse_irradiance)
+        * scaling_factor
+    )
