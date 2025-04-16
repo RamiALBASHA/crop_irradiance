@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Absorbed irradiance by sunlit and shaded leaf fractions &mdash; crop_irradiance 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="Absorbed lumped irradiance" href="absorbed_lumped.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            crop_irradiance
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">What is crop_irradiance ?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="uniform_crops.html">Uniform crops</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="uniform_crops.html#bigleaf-and-layered-canopies">Bigleaf and layered canopies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uniform_crops.html#sunlit-shaded-and-lumped-canopies">Sunlit-shaded and lumped canopies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="uniform_crops.html#calculating-irradiance-absorption">Calculating irradiance absorption</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html">Absorbed lumped irradiance</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Absorbed irradiance by sunlit and shaded leaf fractions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#extinction-and-reflectance-coefficients">Extinction and reflectance coefficients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#irradiance-absorption">Irradiance absorption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layered-canopies">Layered canopies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bigleaf-canopies">Bigleaf canopies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">crop_irradiance</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="uniform_crops.html">Uniform crops</a></li>
+      <li class="breadcrumb-item active">Absorbed irradiance by sunlit and shaded leaf fractions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/absorbed_sunlit_shaded.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="absorbed-irradiance-by-sunlit-and-shaded-leaf-fractions">
+<span id="absorbed-sunlit-shaded"></span><h1>Absorbed irradiance by sunlit and shaded leaf fractions<a class="headerlink" href="#absorbed-irradiance-by-sunlit-and-shaded-leaf-fractions" title="Link to this heading"></a></h1>
+<p>Let’s state first the following two assumptions <strong>(Goudriaan, 1977; 1988; 1994; 2016)</strong>:</p>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">Sunlit leaves receive solar irradiance that comes from the sun (solar beam, <span class="math notranslate nohighlight">\(I_{direct}\)</span>),</div>
+<div class="line">from the sky and/or clouds (sky-diffused, <span class="math notranslate nohighlight">\(I_{diffuse}\)</span>), and from leaves</div>
+<div class="line">(leaf-scattered, <span class="math notranslate nohighlight">\(I_{scattered}\)</span>).</div>
+</div>
+</li>
+<li><p>Shaded leaves do not receive the direct irradiance but do receive diffuse and scattered irradiance.</p></li>
+</ol>
+<figure class="align-center" id="id3">
+<span id="absorption-sunlit-shaded-irradiance-terms"></span><img alt="_images/absorption_sunlit_shaded_irradiance_terms.png" src="_images/absorption_sunlit_shaded_irradiance_terms.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Irradiance components that are absorbed by sunlit and shaded leaves.
+<span class="math notranslate nohighlight">\(I_{direct} \ [W \cdot m^{-2}_{leaf}]\)</span> is solar direct (beam) irradiance,
+<span class="math notranslate nohighlight">\(I_{diffuse} \ [W \cdot m^{-2}_{leaf}]\)</span> is sky-diffused irradiance, and
+<span class="math notranslate nohighlight">\(I_{scattered} \ [W \cdot m^{-2}_{leaf}]\)</span> is leaf-scattered irradiance.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>You may have noticed in <a class="reference internal" href="#absorption-sunlit-shaded-irradiance-terms"><span class="std std-numref">Fig. 8</span></a> that the size of the yellow
+arrows changes with leaf orientation. I tried by doing so to illustrate how leaf orientation affects its scattering
+to the incident irradiance and by that, to indicate that also the quantity of the direct irradiance absorbed by a given
+leaf depends on the angle between that leaf and the solar beam. For instance, the higher the sun is in the sky
+(<strong>time-dependent</strong>), the more likely for solar beam to reach deeper leaves inside the canopy.
+Furthermore, the more uniformly distributed leaf angles are (<strong>structure-dependent</strong>), the more irradiance they are
+likely to intercept irradiance. This interplay between the solar position and leaf angles is captured through the
+extinction coefficient of the direct irradiance as we will see below
+(<a class="reference internal" href="#extinction-and-reflectance-coefficients">extinction_and_reflectance_coefficients</a>).</p>
+<p>Generally, it is assumed that leaf angles through the canopy follow a uniform distribution. This means that if we took
+all leaves and organized them on a surface, this surface will be a hemisphere. The consequence of this assumption is
+that the surface of leaves that intercepts the incoming irradiance will remain the same independently from the incident
+angle (<a class="reference internal" href="#leaf-angle-distribution"><span class="std std-numref">Fig. 9</span></a>).</p>
+<figure class="align-center" id="id4">
+<span id="leaf-angle-distribution"></span><img alt="_images/leaf_angles_distribution.png" src="_images/leaf_angles_distribution.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Effect of the distribution of leaf angles on the interception to solar irradiance
+(after <strong>Goudriaan and van Laar, 1994</strong>). <span class="math notranslate nohighlight">\(\beta \ [-]\)</span> is the angle of the solar elevation.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Yet, it is more realistic to consider that leaves have a preferential declination angle (for instance, grapevine is said
+to have its leaves declined by 45° below the horizon). In this latter case leaves intercept different fractions of
+incident irradiance depending on the angle between the solar beam and leaves.</p>
+<p>Finally, before going into equations, recall that the absorbed irradiance per unit ground area is the product of the
+absorbed irradiance per unit leaf area and leaf area index (leaf area per unit ground area) for each leaf fraction
+(sunlit and shaded). Keep in mind also that at the exception of the flux density of direct irradiance
+(<span class="math notranslate nohighlight">\(I_{direct} \ [W \cdot m^{-2}{leaf}]\)</span>), leaf area fractions and irradiance flux densities vary
+exponentially with depth (<a class="reference internal" href="#fig-absorption-sunlit-shaded-fractions-and-intensities"><span class="std std-numref">Fig. 10</span></a>).
+<span class="math notranslate nohighlight">\(I_{direct}\)</span> is indeed constant with depth. To simply understand this fact, check sunflecks inside a canopy:
+all light spots shine with the same intensity throughout depth, yet, the surface of these spots reduces
+strongly with depth (<a class="reference internal" href="#fig-sunlit-fraction-profile"><span class="std std-numref">Fig. 11</span></a>).</p>
+<figure class="align-center" id="id5">
+<span id="fig-absorption-sunlit-shaded-fractions-and-intensities"></span><img alt="_images/absorption_sunlit_shaded_fractions_and_intensities.png" src="_images/absorption_sunlit_shaded_fractions_and_intensities.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Leaf fractions and irradiance intensities considered for calculating irradiance absorption by <em>sunlit-shaded</em>
+canopies. Simulations are performed for a canopy composed of 8 leaf layers having each an area thickness of
+<span class="math notranslate nohighlight">\(1 \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span>.
+<span class="math notranslate nohighlight">\(I_{abs, \ direct} \ [W \cdot m^{-2}_{leaf}]\)</span> is flux density of the absorbed direct (solar beam) irradiance,
+<span class="math notranslate nohighlight">\(I_{abs, \ diffuse} \ [W \cdot m^{-2}_{leaf}]\)</span> is flux density of the absorbed sky-diffused irradiance, and
+<span class="math notranslate nohighlight">\(I_{abs, \ scattered} \ [W \cdot m^{-2}_{leaf}]\)</span> is flux density of the absorbed leaf-scattered irradiance.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id6">
+<span id="fig-sunlit-fraction-profile"></span><img alt="_images/sunlit_fraction_profile.png" src="_images/sunlit_fraction_profile.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">The surface of sunlit leaves, not light intensity, reduces strongly with depth inside the canopy from
+upper <span class="math notranslate nohighlight">\((a)\)</span> to lower <span class="math notranslate nohighlight">\((b)\)</span> levels.</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="extinction-and-reflectance-coefficients">
+<span id="id1"></span><h2>Extinction and reflectance coefficients<a class="headerlink" href="#extinction-and-reflectance-coefficients" title="Link to this heading"></a></h2>
+<p>The incident direct (<span class="math notranslate nohighlight">\(I_{inc, \ direct}\)</span>) and sky-diffused (<span class="math notranslate nohighlight">\(I_{inc, \ diffuse}\)</span>) irradiacne fluxes have
+distinct extinction coefficients inside the canopy.</p>
+<p>The extinction coefficient of the direct irradiance (<span class="math notranslate nohighlight">\(k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span>) varies
+within the day as a function of the position of the sun (recall that the higher the sun is, the deeper sunflcks go
+inside the canopy). It is given as <strong>(Cowan, 1968; Goudriaan, 1977, Weiss et al., 2004, Campbell and Norman, 2012)</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-direct-extinction-coefficient">
+<span class="eqno">(9)<a class="headerlink" href="#equation-direct-extinction-coefficient" title="Link to this equation"></a></span>\[k_{direct} = k_{direct, \ black} \cdot \sqrt{1 - \sigma}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight" id="equation-scattering-coefficient">
+<span class="eqno">(10)<a class="headerlink" href="#equation-scattering-coefficient" title="Link to this equation"></a></span>\[\sigma = \rho + \tau\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-direct-black-extinction-coefficient">
+<span class="eqno">(11)<a class="headerlink" href="#equation-direct-black-extinction-coefficient" title="Link to this equation"></a></span>\[k_{direct, \ black} = C \cdot \frac{\bar{o}(\beta)}{\sin{\beta}}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(C \ [-]\)</span> is the clumping factor,
+<span class="math notranslate nohighlight">\(\bar{o}(\beta)\)</span> is a projection function describing the surface of canopy elements that intercept the solar beam,
+<span class="math notranslate nohighlight">\(k_{direct, \ black} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span> is the extinction coefficient of black leaves and
+<span class="math notranslate nohighlight">\(\sigma \ [-]\)</span> is the leaf scattering coefficient, equal to the sum of leaf reflectance (<span class="math notranslate nohighlight">\(\rho \ [-]\)</span>)
+and transmittance (<span class="math notranslate nohighlight">\(\tau \ [-]\)</span>), all in the same irradiance band:</p>
+<p>The distribution function <span class="math notranslate nohighlight">\(\bar{o}(\beta)\)</span> can be approximated by an ellipsoidal function following
+<strong>Campbell (1986)</strong> which yields:</p>
+<div class="math notranslate nohighlight" id="equation-ellipsoidal-distribution">
+<span class="eqno">(12)<a class="headerlink" href="#equation-ellipsoidal-distribution" title="Link to this equation"></a></span>\[k_{direct, \ black} = C \cdot \frac{\sqrt{\chi ^2 + \cot^2{\beta}}}{\chi + 1.774 \cdot \left(\chi + 1.182\right) ^{-0.733}}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\chi \ [-]\)</span> is the eccentricity of the ellipsoid, calculated as a function of the leaf characteristic angle
+<span class="math notranslate nohighlight">\(\bar{\alpha}\)</span> following <strong>Campbell (1990)</strong> as:</p>
+<div class="math notranslate nohighlight" id="equation-eccentricity-factor">
+<span class="eqno">(13)<a class="headerlink" href="#equation-eccentricity-factor" title="Link to this equation"></a></span>\[\chi = \left(\frac{\bar{\alpha}}{9.65} \right) ^ {-0.6061} - 3\]</div>
+<p>It is noteworthy that when <span class="math notranslate nohighlight">\(\alpha = 56 ^\circ\)</span> then <span class="math notranslate nohighlight">\(\chi = 1\)</span> and the ellipsoidal distribution becomes a
+spherical distribution.</p>
+<p>The extinction coefficient of the sky-diffused irradiance (<span class="math notranslate nohighlight">\(k_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span>)
+is independent from sun’s position but varies with the total leaf area of the canopy.
+<span class="math notranslate nohighlight">\(k_{diffuse}\)</span> is derived using <a class="reference internal" href="#equation-direct-extinction-coefficient">(9)</a> by considering the sky as an ensemble of
+finite sectors that send, each, diffuse irradiance as if it were a beam irradiance. These sectors may be represented by
+rings. The extinction coefficient <span class="math notranslate nohighlight">\(k_{diffuse}\)</span> is given as:</p>
+<div class="math notranslate nohighlight" id="equation-diffuse-extinction-coefficient-general">
+<span class="eqno">(14)<a class="headerlink" href="#equation-diffuse-extinction-coefficient-general" title="Link to this equation"></a></span>\[k_{diffuse} =
+- \frac{1}{L_t} \cdot \ln
+    \left(
+        \Sigma_i^n {
+        \left(
+        c_i \cdot
+        e ^ {- k_{direct}(\beta_{sky, \ i}) \cdot L_t}
+        \right)
+        }
+    \right)\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(L_t \ [m^2_{leaf} \ m^{-2}_{ground}]\)</span> is the canopy total leaf area index,
+<span class="math notranslate nohighlight">\(\beta_{sky, \ i} \ [-]\)</span> is the angle elevation of each sky ring,
+<span class="math notranslate nohighlight">\(c_i \ [-]\)</span> is a weighing factor accounting for the relative surface area of each sky ring, and
+<span class="math notranslate nohighlight">\(n \ [-]\)</span> is the number of sky rings that form the sky dome.</p>
+<p><strong>Goudriaan (1988)</strong> showed that <span class="math notranslate nohighlight">\(k_{diffuse}\)</span> can be adequately estimated as long as the number of sky rings is
+greater or equal to 3. Thus for 3 rings spanning respectively over angular sectors with an increasing angle of
+30 <span class="math notranslate nohighlight">\(^\circ\)</span>
+(<span class="math notranslate nohighlight">\(\left[ 0, \frac{\pi}{6} \right]\)</span>,
+<span class="math notranslate nohighlight">\(\left[ \frac{\pi}{6}, \frac{\pi}{3} \right]\)</span>,
+<span class="math notranslate nohighlight">\(\left[ \frac{\pi}{3}, \frac{\pi}{2} \right]\)</span>)
+the last equation becomes:</p>
+<div class="math notranslate nohighlight" id="equation-diffuse-extinction-coefficient">
+<span class="eqno">(15)<a class="headerlink" href="#equation-diffuse-extinction-coefficient" title="Link to this equation"></a></span>\[\begin{split}k_{diffuse} =
+- \frac{1}{L_t} \cdot \ln
+    \left(
+        \begin{array}{1}
+            0.178 \cdot e^ {- k_{direct}(\frac{\pi}{12}) \cdot L_t}
+            \\
+            + 0.514 \cdot e^ {- k_{direct}(\frac{3\pi}{12}) \cdot L_t}
+            \\
+            + 0.308 \cdot e^ {- k_{direct}(\frac{5\pi}{12}) \cdot L_t}
+        \end{array}
+    \right)\end{split}\]</div>
+<p>where
+the coefficients 0.178, 0.514 and 0.308 are calculated for a standard sky over cast (SOC) assuming a ration 3:1
+between zenith and minimum horizontal sky illuminance.</p>
+<p>Reflectance coefficients to direct and diffuse irradiance are needed in absorbed irradiance calculations
+(cf. <a class="reference internal" href="#irradiance-absorption">irradiance_absorption</a>).</p>
+<p>Canopy reflectance to direct irradiance <span class="math notranslate nohighlight">\(\rho_{direct} \ [-]\)</span> depends on leaf angles distribution and the
+declination of the solar beam. <span class="math notranslate nohighlight">\(\rho_{direct}\)</span> is lowest when the sun is closest the zenith and highest as solar inclination
+approaches 0 <span class="math notranslate nohighlight">\(^\circ\)</span> (sun is grazing over horizontal leaves). <span class="math notranslate nohighlight">\(\rho_{dir}\)</span> is given by <strong>Goudriaan (1977)</strong>
+as:</p>
+<div class="math notranslate nohighlight" id="equation-direct-canopy-reflectance">
+<span class="eqno">(16)<a class="headerlink" href="#equation-direct-canopy-reflectance" title="Link to this equation"></a></span>\[\rho_{direct} = 1 - \exp {\left( - \frac{2 \cdot \rho_h \cdot k_{direct, \ black}}{1 + k_{direct, \ black}} \right)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho_h \ [-]\)</span> is the reflection coefficient of a canopy having horizontal leaves, defined as:</p>
+<div class="math notranslate nohighlight" id="equation-horizontal-reflectance">
+<span class="eqno">(17)<a class="headerlink" href="#equation-horizontal-reflectance" title="Link to this equation"></a></span>\[\rho_h = \frac{1 - \sqrt{1 - \sigma}}{1 + \sqrt{1 - \sigma}}\]</div>
+<p>Canopy reflectance coefficient to the sky-diffused irradiance
+(<span class="math notranslate nohighlight">\(\rho_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span>) is farely constant across canopies and its value can
+roughly be set to 0.057 for the photosynthetically active radiation (PAR) band and 0.389 for the near infrared (NIR)
+band <strong>(Goudriaan and van Laar, 1994)</strong>.</p>
+</section>
+<section id="irradiance-absorption">
+<span id="id2"></span><h2>Irradiance absorption<a class="headerlink" href="#irradiance-absorption" title="Link to this heading"></a></h2>
+<p>Let’s recall first that sunlit leaves absorbe irradiance that comes from the
+solar beam (<span class="math notranslate nohighlight">\(I_{abs, \ direct} \ [W \cdot m^{-2}_{leaf}]\)</span>),
+sky-diffused (<span class="math notranslate nohighlight">\(I_{abs, \ sky-diffused} \ [W \cdot m^{-2}_{leaf}]\)</span>), and
+leaf-scattered (<span class="math notranslate nohighlight">\(I_{abs, \ leaf-scattered} \ [W \cdot m^{-2}_{leaf}]\)</span>) irradiance.
+Shaded leaves receive only sky-diffused and leaf-scattered irradiance (cf. <a class="reference internal" href="#absorbed-sunlit-shaded">absorbed_sunlit_shaded</a>).</p>
+<p>On a ground area basis, irradiance absorption by sunlit <span class="math notranslate nohighlight">\(I_{abs, \ sunlit} \ [W \cdot m^{-2}_{ground}]\)</span>
+and shaded <span class="math notranslate nohighlight">\(I_{abs, \ shaded} \ [W \cdot m^{-2}_{ground}]\)</span> leaf fractions of a leaf layer spanning between depths
+<span class="math notranslate nohighlight">\(L_u \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> and <span class="math notranslate nohighlight">\(L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> are given as:</p>
+<div class="math notranslate nohighlight" id="equation-sunlit-absorbed">
+<span class="eqno">(18)<a class="headerlink" href="#equation-sunlit-absorbed" title="Link to this equation"></a></span>\[I_{abs, \ sunlit} =
+    \int_{L_u}^{L_l} {
+        \left(
+            I_{abs, \ direct} + I_{abs, \ sky-diffused} + I_{abs, \ leaf-scattered}
+        \right) \cdot \phi_{sunlit} \ dL
+    }\]</div>
+<div class="math notranslate nohighlight" id="equation-shaded-absorbed">
+<span class="eqno">(19)<a class="headerlink" href="#equation-shaded-absorbed" title="Link to this equation"></a></span>\[I_{abs, \ sunlit} =
+    \int_{L_u}^{L_l} {
+        \left(
+            I_{abs, \ sky-diffused} + I_{abs, \ leaf-scattered}
+        \right) \cdot \phi_{shaded} \ dL
+    }\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\phi_{sunlit} \ [m^2_{leaf} \cdot m^{-2}_{leaf}]\)</span> and <span class="math notranslate nohighlight">\(\phi_{shaded} \ [m^2_{leaf} \cdot m^{-2}_{leaf}]\)</span>
+are respectively leaf fractions of sunlit and shaded leaves, given as:</p>
+<div class="math notranslate nohighlight" id="equation-sunlit-fraction-leaf-basis">
+<span class="eqno">(20)<a class="headerlink" href="#equation-sunlit-fraction-leaf-basis" title="Link to this equation"></a></span>\[\phi_{sunlit} = e ^ {- k_{direct, \ black} \cdot L}\]</div>
+<div class="math notranslate nohighlight" id="equation-shaded-fraction-leaf-basis">
+<span class="eqno">(21)<a class="headerlink" href="#equation-shaded-fraction-leaf-basis" title="Link to this equation"></a></span>\[\phi_{shaded} = 1 - \phi_{sunlit}\]</div>
+<p><span class="math notranslate nohighlight">\(I_{abs, \ direct}\)</span>, <span class="math notranslate nohighlight">\(I_{abs, \ sky-diffused}\)</span> and <span class="math notranslate nohighlight">\(I_{abs, \ leaf-scattered}\)</span> are given in the three
+following equations, respectively:</p>
+<div class="math notranslate nohighlight" id="equation-beam-diffuse-scattered-absorbed">
+<span class="eqno">(22)<a class="headerlink" href="#equation-beam-diffuse-scattered-absorbed" title="Link to this equation"></a></span>\[ \begin{align}\begin{aligned}\begin{array}\\\begin{split}    I_{abs, \ direct} &amp;=
+        I_{inc, \ direct} \cdot (1 - \sigma) \cdot k_{direct, \ black}
+    \\
+    I_{abs, \ sky-diffused} &amp;=
+        I_{inc, \ diffuse} \cdot
+        \left( 1 - \rho_{diffuse} \right) \cdot
+        k_{diffuse} \cdot
+        e ^ {- k_{diffuse} \cdot L }
+    \\
+    I_{abs, \ leaf_scattered} &amp;=
+        I_{inc, \ direct} \cdot
+        \left[
+            \begin{array}
+                ((1 - \rho_{direct}) \cdot k_{direct} e ^ {-k_{diffuse} \cdot L} \\
+                - (1 - \sigma) \cdot k_{direct, \ black} \cdot e ^ {-k_{direct, \ black} \cdot L}
+            \end{array}
+        \right]\end{split}\\\end{array}\end{aligned}\end{align} \]</div>
+<p>where
+<span class="math notranslate nohighlight">\(I_{inc, \ direct}\)</span> and
+<span class="math notranslate nohighlight">\(I_{inc, \ diffuse} \ [W \ m^{-2}_{ground}]\)</span> are the incident direct and sky-diffused irradiance, respectively.</p>
+</section>
+<section id="layered-canopies">
+<h2>Layered canopies<a class="headerlink" href="#layered-canopies" title="Link to this heading"></a></h2>
+<p>For a leaf layer spanning between depths <span class="math notranslate nohighlight">\(L_u \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> and
+<span class="math notranslate nohighlight">\(L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> equations <a class="reference internal" href="#equation-sunlit-absorbed">(18)</a> and <a class="reference internal" href="#equation-shaded-absorbed">(19)</a> become:</p>
+<div class="math notranslate nohighlight" id="equation-sunlit-absorbed-layered">
+<span class="eqno">(23)<a class="headerlink" href="#equation-sunlit-absorbed-layered" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ sunlit}
+    &amp; =
+    I_{inc, \ direct} \cdot (1 - \sigma) \cdot
+    \left(
+        e ^ {- k_{direct, \ black} \cdot L_u} - e ^ {- k_{direct, \ black} \cdot L_l}
+    \right)
+    \\
+    &amp; + I_{inc, \ diffuse} \cdot
+    \left( 1 - \rho_{diffuse} \right) \cdot
+    \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+    \left(
+        \begin{array}
+            + e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_u } \\
+            - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_l }
+        \end{array}
+    \right)
+    \\
+    &amp; + I_{inc, \ direct} \cdot
+    \left[
+        \begin{array}{1}
+            \left( 1 - \rho_{direct} \right) \cdot
+            \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+            \left(
+                \begin{array}
+                    + e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_u }    \\
+                    - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_l }
+                \end{array}
+            \right)
+            \\
+            - (1 - \sigma) \cdot
+            \frac{1}{2} \cdot
+            \left(
+                e ^ {- 2 \cdot k_{direct, \ black} \cdot L_u }
+                - e ^ {-2 \cdot k_{direct, \ black} \cdot L_l }
+            \right)
+        \end{array}
+    \right]\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-shaded-absorbed-layered">
+<span class="eqno">(24)<a class="headerlink" href="#equation-shaded-absorbed-layered" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ shaded}
+    &amp; =
+    I_{inc, \ diffuse} \cdot
+    \left( 1 - \rho_{diffuse} \right) \cdot
+    \left(
+        \begin{array}{1}
+            \left(
+                \begin{array}
+                    + e ^ {- k_{diffuse} \cdot L_u } \\
+                    - e ^ {- k_{diffuse} \cdot L_l }
+                \end{array}
+            \right)
+            \\
+            - \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+            \left(
+                \begin{array}
+                    + e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_u } \\
+                    - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_l }
+                \end{array}
+            \right)
+        \end{array}
+    \right)
+    \\
+    &amp; + I_{inc, \ direct} \cdot
+    \left[
+        \begin{array}{1}
+            \left( 1 - \rho_{direct} \right) \cdot
+            \left(
+                \begin{array}{1}
+                    \left(
+                        \begin{array}
+                            + e ^ {- k_{direct} \cdot L_u }    \\
+                            - e ^ {- k_{direct} \cdot L_l }
+                        \end{array}
+                    \right)
+                    \\
+                    - \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+                    \left(
+                        \begin{array}
+                            + e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_u }    \\
+                            - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_l }
+                        \end{array}
+                    \right)
+                \end{array}
+            \right)
+            \\
+            - (1 - \sigma) \cdot
+            \left(
+                \begin{array}{1}
+                    \left(
+                        e ^ {- k_{direct, \ black} \cdot L_u } - e ^ {- k_{direct, \ black} \cdot L_l }
+                    \right)
+                    \\
+                    - \frac{1}{2} \cdot
+                    \left(
+                        e ^ {- 2 \cdot k_{direct, \ black} \cdot L_u }
+                        - e ^ {-2 \cdot k_{direct, \ black} \cdot L_l }
+                    \right)
+                \end{array}
+            \right)
+        \end{array}
+    \right]\end{split}\]</div>
+</section>
+<section id="bigleaf-canopies">
+<h2>Bigleaf canopies<a class="headerlink" href="#bigleaf-canopies" title="Link to this heading"></a></h2>
+<p>For a bigleaf canopy equations <a class="reference internal" href="#equation-sunlit-absorbed-layered">(23)</a> and <a class="reference internal" href="#equation-shaded-absorbed-layered">(24)</a> become respectively:</p>
+<div class="math notranslate nohighlight" id="equation-sunlit-absorbed-bigleaf">
+<span class="eqno">(25)<a class="headerlink" href="#equation-sunlit-absorbed-bigleaf" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ sunlit}
+    &amp; =
+    I_{inc, \ direct} \cdot (1 - \sigma) \cdot
+    \left(
+        1 - e ^ {- k_{direct, \ black} \cdot L_t}
+    \right)
+    \\
+    &amp; + I_{inc, \ diffuse} \cdot
+    \left( 1 - \rho_{diffuse} \right) \cdot
+    \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+    \left(
+        \begin{array}
+            + 1
+            - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_t }
+        \end{array}
+    \right)
+    \\
+    &amp; + I_{inc, \ direct} \cdot
+    \left[
+        \begin{array}{1}
+            \left( 1 - \rho_{direct} \right) \cdot
+            \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+            \left(
+                \begin{array}
+                    + 1
+                    - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_t }
+                \end{array}
+            \right)
+            \\
+            - (1 - \sigma) \cdot
+            \frac{1}{2} \cdot
+            \left(
+                1
+                - e ^ {-2 \cdot k_{direct, \ black} \cdot L_t }
+            \right)
+        \end{array}
+    \right]\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-shaded-absorbed-bigleaf">
+<span class="eqno">(26)<a class="headerlink" href="#equation-shaded-absorbed-bigleaf" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ shaded}
+    &amp; =
+    I_{inc, \ diffuse} \cdot
+    \left( 1 - \rho_{diffuse} \right) \cdot
+    \left(
+        \begin{array}{1}
+            \left(
+                \begin{array}
+                    + 1
+                    - e ^ {- k_{diffuse} \cdot L_t }
+                \end{array}
+            \right)
+            \\
+            - \frac{k_{diffuse}}{k_{diffuse} + k_{direct, \ black}} \cdot
+            \left(
+                \begin{array}
+                    + 1
+                    - e ^ {- (k_{diffuse} + k_{direct, \ black}) \cdot L_t }
+                \end{array}
+            \right)
+        \end{array}
+    \right)
+    \\
+    &amp; + I_{inc, \ direct} \cdot
+    \left[
+        \begin{array}{1}
+            \left( 1 - \rho_{direct} \right) \cdot
+            \left(
+                \begin{array}{1}
+                    \left(
+                        \begin{array}
+                            + 1
+                            - e ^ {- k_{direct} \cdot L_t }
+                        \end{array}
+                    \right)
+                    \\
+                    - \frac{k_{direct}}{k_{direct} + k_{direct, \ black}} \cdot
+                    \left(
+                        \begin{array}
+                            + 1
+                            - e ^ {- (k_{direct} + k_{direct, \ black}) \cdot L_t }
+                        \end{array}
+                    \right)
+                \end{array}
+            \right)
+            \\
+            - (1 - \sigma) \cdot
+            \left(
+                \begin{array}{1}
+                    \left(
+                        1
+                        - e ^ {- k_{direct, \ black} \cdot L_t }
+                    \right)
+                    \\
+                    - \frac{1}{2} \cdot
+                    \left(
+                        1
+                        - e ^ {-2 \cdot k_{direct, \ black} \cdot L_t }
+                    \right)
+                \end{array}
+            \right)
+        \end{array}
+    \right]\end{split}\]</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="absorbed_lumped.html" class="btn btn-neutral float-left" title="Absorbed lumped irradiance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Rami Albasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Absorbed lumped irradiance &mdash; crop_irradiance 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Absorbed irradiance by sunlit and shaded leaf fractions" href="absorbed_sunlit_shaded.html" />
+    <link rel="prev" title="Uniform crops" href="uniform_crops.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            crop_irradiance
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">What is crop_irradiance ?</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="uniform_crops.html">Uniform crops</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="uniform_crops.html#bigleaf-and-layered-canopies">Bigleaf and layered canopies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uniform_crops.html#sunlit-shaded-and-lumped-canopies">Sunlit-shaded and lumped canopies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="uniform_crops.html#calculating-irradiance-absorption">Calculating irradiance absorption</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Absorbed lumped irradiance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#beer-s-law">Beer’s law</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#de-pury-and-farquhar-1997">de Pury and Farquhar (1997)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_sunlit_shaded.html">Absorbed irradiance by sunlit and shaded leaf fractions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">crop_irradiance</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="uniform_crops.html">Uniform crops</a></li>
+      <li class="breadcrumb-item active">Absorbed lumped irradiance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/absorbed_lumped.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="absorbed-lumped-irradiance">
+<h1>Absorbed lumped irradiance<a class="headerlink" href="#absorbed-lumped-irradiance" title="Link to this heading"></a></h1>
+<p>Absorption of lumped irradiance can be calculated following two models, respectively Beer’s law
+<strong>(Monsi and Saeki, 1953)</strong> and <strong>de Pury et al. (1997)</strong>.</p>
+<section id="beer-s-law">
+<h2>Beer’s law<a class="headerlink" href="#beer-s-law" title="Link to this heading"></a></h2>
+<p><strong>Monsi and Saeki (1953)</strong> were probably the first to use Beer-Lambert’s law in order to simulate irradiance transfer
+through crop canopies. Following this approach, leaves are assumed to form a continuous turbid medium that intercepts the incident
+irradiance <span class="math notranslate nohighlight">\(I_{inc} \ [W \cdot m^{-2}_{ground}]\)</span> and the ability of the canopy to transfer irradiance is
+represented by the so-called so-called extinction coefficient property
+<span class="math notranslate nohighlight">\(k_{lumped} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span>.</p>
+<figure class="align-center" id="id3">
+<span id="fig-absorption-lumped"></span><img alt="_images/absorption_lumped.png" src="_images/absorption_lumped.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text"><em>Lumped</em> irradiance absoption.
+<span class="math notranslate nohighlight">\(L \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> is downward-cumulative leaf area index,
+<span class="math notranslate nohighlight">\(I_{inc} \ [W \cdot m^{-2}_{ground}]\)</span> is the incident global irradiance,
+<span class="math notranslate nohighlight">\(I_{trans} \ [W \cdot m^{-2}_{ground}]\)</span> is the transmitted global irradiance below <span class="math notranslate nohighlight">\(L\)</span>,
+<span class="math notranslate nohighlight">\(I_{abs, \ lumped} \ [W \cdot m^{-2}_{ground}]\)</span> is the absorbed <em>lumped</em> irradiance by leaves throughout
+<span class="math notranslate nohighlight">\(L\)</span>.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Below a given depth <span class="math notranslate nohighlight">\(L \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> inside the canopy, the flux density of the
+transmitted irradiance <span class="math notranslate nohighlight">\(I_{trans} \ [W \cdot m^{-2}_{ground}]\)</span> is calculated as:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-beer-transmitted">
+<span class="eqno">(1)<a class="headerlink" href="#equation-lumped-beer-transmitted" title="Link to this equation"></a></span>\[I_{trans} = I_{inc} \cdot \exp \left( -k_{lumped} \cdot L \right)\]</div>
+<p>Given a finite leaf layer of a thickness <span class="math notranslate nohighlight">\(dL \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> at depth <span class="math notranslate nohighlight">\(L\)</span> , the
+absorbed <em>lumped</em> irradiance <span class="math notranslate nohighlight">\(d I_{abs} \ [W \cdot m^{-2}_{ground}]\)</span> can be calculated as:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-beer-absorbed-finite-layer">
+<span class="eqno">(2)<a class="headerlink" href="#equation-lumped-beer-absorbed-finite-layer" title="Link to this equation"></a></span>\[\begin{split}\frac{d I_{abs, \ lumped}}{d L} =&amp; - \frac{d I_{trans}}{d L}  \\
+                                =&amp;  k_{lumped} \cdot I_{inc} \cdot \exp(-k_{lumped} \cdot L)\end{split}\]</div>
+<section id="layered-canopies">
+<h3>Layered canopies<a class="headerlink" href="#layered-canopies" title="Link to this heading"></a></h3>
+<figure class="align-center" id="id4">
+<span id="fig-absorption-lumped-layered"></span><img alt="_images/absorption_lumped_layered.png" src="_images/absorption_lumped_layered.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text"><em>Lumped</em> irradiance absoption by a leaf layer spanning between upper
+<span class="math notranslate nohighlight">\(L_u [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> and lower <span class="math notranslate nohighlight">\(L_l [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> depths.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The rate of the absorbed irradiance of a leaf layer that spands between an upper depth
+<span class="math notranslate nohighlight">\(L_u \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> and a lower depth <span class="math notranslate nohighlight">\(L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span>
+(<a class="reference internal" href="#fig-absorption-lumped-layered"><span class="std std-numref">Fig. 6</span></a>) is obtained from <a class="reference internal" href="#equation-lumped-beer-absorbed-finite-layer">(2)</a> as:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-absorbed-layer-integral">
+<span class="eqno">(3)<a class="headerlink" href="#equation-lumped-absorbed-layer-integral" title="Link to this equation"></a></span>\[I_{abs, \ lumped} = \int_{L_u}^{L_l} {k_{lumped} \cdot I_{inc} \cdot \exp(-k_{lumped} \cdot L) \ dL}\]</div>
+<p>which yields:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-absorbed-layered">
+<span class="eqno">(4)<a class="headerlink" href="#equation-lumped-absorbed-layered" title="Link to this equation"></a></span>\[I_{abs, \ lumped} = I_{inc} \cdot \left[ \exp(-k_{lumped} \cdot L_u) - exp(-k_{lumped} \cdot L_l) \right]\]</div>
+</section>
+<section id="bigleaf-canopies">
+<h3>Bigleaf canopies<a class="headerlink" href="#bigleaf-canopies" title="Link to this heading"></a></h3>
+<figure class="align-center" id="id5">
+<span id="fig-absorption-lumped-bigleaf"></span><img alt="_images/absorption_lumped_bigleaf.png" src="_images/absorption_lumped_bigleaf.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text"><em>Lumped</em> irradiance absoption by a <em>bigleaf</em> canopy.
+<span class="math notranslate nohighlight">\(L_t [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> is the total leaf area index.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Irradiance absorption by a <em>bigleaf</em> canopy (<a class="reference internal" href="#fig-absorption-lumped-bigleaf"><span class="std std-numref">Fig. 7</span></a>) is simply derived from
+<a class="reference internal" href="#equation-lumped-absorbed-layered">(4)</a> by replacing <span class="math notranslate nohighlight">\(L_u\)</span> and <span class="math notranslate nohighlight">\(L_l\)</span> by 0 and the total leaf area index
+<span class="math notranslate nohighlight">\(L_{t} \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span>, respectively, which yields:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-absorbed-big-leaf">
+<span class="eqno">(5)<a class="headerlink" href="#equation-lumped-absorbed-big-leaf" title="Link to this equation"></a></span>\[I_{abs, \ lumped} = I_{inc} \cdot \left[1 - \exp(-k_{lumped} \cdot L_t) \right]\]</div>
+</section>
+</section>
+<section id="de-pury-and-farquhar-1997">
+<h2>de Pury and Farquhar (1997)<a class="headerlink" href="#de-pury-and-farquhar-1997" title="Link to this heading"></a></h2>
+<p>This model is simplified from Goudriaan models <strong>(Goudriaan, 1977; 1988; 1994; 2016)</strong> by disregarding the scattering
+effect of leaves. <strong>de Pury and Farquhar (1997)</strong> calculated the absorbed lumped irradiance as the sum of absorbed
+direct and diffuse irradiance rates, respectively <span class="math notranslate nohighlight">\(I_{abs, \ direct}\)</span> and
+<span class="math notranslate nohighlight">\(I_{abs, \ diffuse} \ [W \cdot m^{-2}_{ground}]\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-de-pury">
+<span class="eqno">(6)<a class="headerlink" href="#equation-lumped-de-pury" title="Link to this equation"></a></span>\[I_{abs, \ lumped} = I_{abs, \ direct} + I_{abs, \ diffuse}\]</div>
+<section id="id1">
+<h3>Layered canopies<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>On a ground area basis, the absorbed lumped irradiance by a leaf layer spanning between depths
+<span class="math notranslate nohighlight">\(L_u\)</span> and <span class="math notranslate nohighlight">\(L_l \ [m^2_{leaf} \cdot m^{-2}_{ground}]\)</span> writes:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-layered-de-pury">
+<span class="eqno">(7)<a class="headerlink" href="#equation-lumped-layered-de-pury" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ lumped}
+    &amp;= I_{inc, \ direct} \cdot
+        (1 - \rho_{direct}) \cdot
+        \left(
+            \exp(-k_{direct} \cdot L_u) - \exp(-k_{direct} \cdot L_l)
+        \right) \\
+    &amp;+ I_{inc, \ diffuse} \cdot
+        (1 - \rho_{diffuse}) \cdot
+        \left(
+            \exp(-k_{diffuse} \cdot L_u) - \exp(-k_{diffuse} \cdot L_l)
+        \right)\end{split}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(I_{inc, \ direct} \ [W \cdot m^{-2}_{ground}]\)</span> is the incident direct (beam) irradiance,
+<span class="math notranslate nohighlight">\(I_{inc, \ diffuse} \ [W \cdot m^{-2}_{ground}]\)</span> is the incident sky-diffused irradiance,
+<span class="math notranslate nohighlight">\(\rho_{direct} \ [-]\)</span> is canopy reflectance to direct irradiance,
+<span class="math notranslate nohighlight">\(\rho_{diffuse} \ [-]\)</span> is canopy reflectance to diffuse irradiance,
+<span class="math notranslate nohighlight">\(k_{direct} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span> is the extinction coefficient of the direct irradiance, and
+<span class="math notranslate nohighlight">\(k_{diffuse} \ [m^2_{ground} \cdot m^{-2}_{leaf}]\)</span> is the extinction coefficient of the diffuse irradiance. These
+variables are thoroughly described in <a class="reference internal" href="absorbed_sunlit_shaded.html"><span class="doc">Absorbed irradiance by sunlit and shaded leaf fractions</span></a>.</p>
+</section>
+<section id="id2">
+<h3>Bigleaf canopies<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>For a bigleaf canopy, equation <a class="reference internal" href="#equation-lumped-layered-de-pury">(7)</a> become:</p>
+<div class="math notranslate nohighlight" id="equation-lumped-big-leaf-de-pury">
+<span class="eqno">(8)<a class="headerlink" href="#equation-lumped-big-leaf-de-pury" title="Link to this equation"></a></span>\[\begin{split}I_{abs, \ lumped}
+    &amp;= I_{inc, \ direct} \cdot
+        (1 - \rho_{direct}) \cdot
+        \left(
+            1 - \exp(-k_{direct} \cdot L_t)
+        \right) \\
+    &amp;+ I_{inc, \ diffuse} \cdot
+        (1 - \rho_{diffuse}) \cdot
+        \left(
+            1 - \exp(-k_{diffuse} \cdot L_t)
+        \right)\end{split}\]</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uniform_crops.html" class="btn btn-neutral float-left" title="Uniform crops" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="absorbed_sunlit_shaded.html" class="btn btn-neutral float-right" title="Absorbed irradiance by sunlit and shaded leaf fractions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Rami Albasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

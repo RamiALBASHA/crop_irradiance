@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uniform crops &mdash; crop_irradiance 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Absorbed lumped irradiance" href="absorbed_lumped.html" />
+    <link rel="prev" title="What is crop_irradiance ?" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            crop_irradiance
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">What is crop_irradiance ?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Uniform crops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bigleaf-and-layered-canopies">Bigleaf and layered canopies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sunlit-shaded-and-lumped-canopies">Sunlit-shaded and lumped canopies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-irradiance-absorption">Calculating irradiance absorption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html">Absorbed lumped irradiance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_sunlit_shaded.html">Absorbed irradiance by sunlit and shaded leaf fractions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">crop_irradiance</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Uniform crops</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/uniform_crops.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uniform-crops">
+<h1>Uniform crops<a class="headerlink" href="#uniform-crops" title="Link to this heading"></a></h1>
+<p>You’ll get across this document some <cite>bigleaf</cite> or <cite>layered</cite> canopies, as well as some <cite>lumped</cite> and
+<cite>sunlit</cite> and <cite>shaded</cite> leaf fractions… So let’s clarify first what all of this is about.</p>
+<section id="bigleaf-and-layered-canopies">
+<h2>Bigleaf and layered canopies<a class="headerlink" href="#bigleaf-and-layered-canopies" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id2">
+<span id="id1"></span><img alt="_images/uniform_crop.png" src="_images/uniform_crop.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Wheat as an example of a crop having horizontally-uniform canopy. The prism represents leaf area variation across
+<span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span> and <span class="math notranslate nohighlight">\(z\)</span> axis.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Crops such as wheat have canopies that vary weakly horizontally (<a class="reference internal" href="#id1"><span class="std std-numref">Fig. 1</span></a>, left) and may hence be
+assumed uniform on the horizontal basis whereby the only change in leaf area is assumed to occur over the vertical axis
+(<a class="reference internal" href="#id1"><span class="std std-numref">Fig. 1</span></a>, right).</p>
+<p>In some cases, the vertical variability of leaf area is not of big concern the modelers. For these cases, the canopy is
+presented as it where a <em>bigleaf</em> (<a class="reference internal" href="#bigleaf-vs-layered"><span class="std std-numref">Fig. 2</span></a> - center). In contrast, when the vertical variability
+in leaf area matters, crop canopies are represented as a succession of leaf layers
+(<a class="reference internal" href="#bigleaf-vs-layered"><span class="std std-numref">Fig. 2</span></a> - right), that’s when we use the term <em>layered</em> canopy.</p>
+<figure class="align-center" id="id3">
+<span id="bigleaf-vs-layered"></span><img alt="_images/bigleaf_vs_layered.png" src="_images/bigleaf_vs_layered.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Illustration of how a crop canopy may be represented following <em>bigleaf</em> and <em>layered</em> structures.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="sunlit-shaded-and-lumped-canopies">
+<h2>Sunlit-shaded and lumped canopies<a class="headerlink" href="#sunlit-shaded-and-lumped-canopies" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id4">
+<span id="lumped-vs-sunlit-shaded-picture"></span><img alt="_images/lumped_vs_sunlit_shaded_picture.png" src="_images/lumped_vs_sunlit_shaded_picture.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Example of sunlit, shaded and lumped leaves.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>With a crop canopy, there are leaves that are subject to the direct (beam) solar irradiance, that are called <em>sunlit</em>,
+while there are leaves that are casted by those <cite>sunlit</cite> leaves, that are called <cite>shaded</cite>
+(<a class="reference internal" href="#lumped-vs-sunlit-shaded-picture"><span class="std std-numref">Fig. 3</span></a>, left).</p>
+<p>In some cases, crop modelers are interested in distinguishing between these two leaf categories. This is particularly
+the case when photosynthesis is simulated over an hourly basis (take a look at <strong>de Pury and Farquhar (1997)</strong> for
+example). Therefore, henceforth, we call a canopy <em>sunlit-shaded</em> when the latter leaf categories (or fractions) are
+explicitly accounted for when simulating irradiance absorption by that canopy. In contrast, a canopy is called <em>lumped</em>,
+when no distinction is made between its leaf fractions.</p>
+<figure class="align-center" id="id5">
+<span id="possible-canopy-representations"></span><img alt="_images/possible_canopy_representations.png" src="_images/possible_canopy_representations.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The 4 possible uniform canopy representations considered in our package.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Combining the leaf scale (<em>bigleaf</em> vs <em>layered</em>) and the leaf fraction (<em>sunlit-shaded</em> vs <em>lumped</em>) we obtain 4
+possible canopy representations as illustrated in <a class="reference internal" href="#possible-canopy-representations"><span class="std std-numref">Fig. 4</span></a>.</p>
+</section>
+<section id="calculating-irradiance-absorption">
+<h2>Calculating irradiance absorption<a class="headerlink" href="#calculating-irradiance-absorption" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="absorbed_lumped.html">Absorbed lumped irradiance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_lumped.html#beer-s-law">Beer’s law</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html#layered-canopies">Layered canopies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html#bigleaf-canopies">Bigleaf canopies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_lumped.html#de-pury-and-farquhar-1997">de Pury and Farquhar (1997)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html#id1">Layered canopies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="absorbed_lumped.html#id2">Bigleaf canopies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="absorbed_sunlit_shaded.html">Absorbed irradiance by sunlit and shaded leaf fractions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_sunlit_shaded.html#extinction-and-reflectance-coefficients">Extinction and reflectance coefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_sunlit_shaded.html#irradiance-absorption">Irradiance absorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_sunlit_shaded.html#layered-canopies">Layered canopies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="absorbed_sunlit_shaded.html#bigleaf-canopies">Bigleaf canopies</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="What is crop_irradiance ?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="absorbed_lumped.html" class="btn btn-neutral float-right" title="Absorbed lumped irradiance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Rami Albasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
